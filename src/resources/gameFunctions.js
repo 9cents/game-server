@@ -238,8 +238,8 @@ getInstructorDungeon = (db) => (req, res, next) => {
   });
 };
 
-// GET /game/leaderboard
-getLeaderBoard = (db) => (req, res, next) => {
+// GET /game/leaderboardlevel
+getLeaderBoardLevel = (db) => (req, res, next) => {
   const params = req.query;
   const player_name = params["player_name"];
 
@@ -255,6 +255,45 @@ getLeaderBoard = (db) => (req, res, next) => {
     SELECT player.player_name, COALESCE(total, 0) AS total FROM player
     LEFT JOIN total_level ON player.player_name = total_level.player_name
     ORDER BY total DESC NULLS LAST`;
+
+  db.query(queryText, (err, response) => {
+    if (err) {
+      console.log("error getting rows: ", err.detail);
+      res.status(500).json({ message: err });
+    } else {
+      var targetPlayerData = [];
+      const data = response.rows.map((val, idx) => {
+        if (player_name && val.player_name === player_name) {
+          targetPlayerData = [idx + 1, val.total];
+        }
+        return [val.player_name, val.total];
+      });
+
+      res.status(200).json(player_name ? targetPlayerData : data);
+    }
+  });
+};
+
+// GET /game/leaderboardaccuracy
+getLeaderBoardAccuracy = (db) => (req, res, next) => {
+  const params = req.query;
+  const player_name = params["player_name"];
+
+  queryText = `WITH correct AS
+  (SELECT player.player_name, CAST(COUNT(response_id) as FLOAT) AS total FROM player, response, answer
+  WHERE player.player_id = response.player_id
+  AND response.answer_id = answer.answer_id 
+  AND answer.correct = true GROUP BY player.player_name),
+  total_response AS
+  (SELECT player.player_name, CAST(COUNT(response_id) as FLOAT) AS total FROM player, response
+  WHERE player.player_id = response.player_id GROUP BY player.player_name),
+  percentage AS
+  (SELECT correct.player_name, COALESCE(correct.total/total_response.total*100, 0) AS percentage
+  FROM correct, total_response
+  WHERE correct.player_name = total_response.player_name)
+  SELECT player.player_name, COALESCE(percentage, 0) AS total FROM player
+  LEFT JOIN percentage ON player.player_name = percentage.player_name
+  ORDER BY percentage DESC NULLS LAST`;
 
   db.query(queryText, (err, response) => {
     if (err) {
@@ -446,7 +485,8 @@ module.exports = {
   getStoryData,
   getChallengeData,
   getInstructorDungeon,
-  getLeaderBoard,
+  getLeaderBoardLevel,
+  getLeaderBoardAccuracy,
   putGameDungeon,
   putGameResponse,
   putIncrementLevel,

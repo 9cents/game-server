@@ -10,7 +10,8 @@ const {
   getWorldQuestions,
   getStoryData,
   getChallengeData,
-  getLeaderBoard,
+  getLeaderBoardLevel,
+  getLeaderBoardAccuracy,
   putGameDungeon,
   getInstructorDungeon,
   putGameResponse,
@@ -30,7 +31,8 @@ router.get("/game/worldquestions", getWorldQuestions(db));
 router.get("/game/towernames", getTowerNames(db));
 router.get("/game/storydata", getStoryData(db));
 router.get("/game/challengedata", getChallengeData(db));
-router.get("/game/leaderboard", getLeaderBoard(db));
+router.get("/game/leaderboardlevel", getLeaderBoardLevel(db));
+router.get("/game/leaderboardaccuracy", getLeaderBoardAccuracy(db));
 router.get("/game/instructordungeon", getInstructorDungeon(db));
 router.put("/game/dungeon", putGameDungeon(db));
 router.put("/game/response", putGameResponse(db));
