@@ -29,7 +29,6 @@ getTowerNames = (db) => (req, res, next) => {
       worldList = response.rows.map((val) => {
         return val["world_id"];
       });
-      worldList = [...new Set(worldList)];
       towerList = worldList.map((world) => {
         return response.rows
           .filter((row) => {
@@ -107,13 +106,13 @@ getStoryData = (db) => (req, res, next) => {
   AND question.question_id = answer.question_id
   AND question.question_id IN (SELECT * FROM questions)`;
 
-  console.log(queryText)
+  // console.log(queryText)
   db.query(queryText, (err, response) => {
     if (err) {
       console.log("Error getting rows: ", err.detail);
       res.status(500).json({ message: err });
     } else {
-      console.log(response.rows)
+      // console.log(response.rows)
       var questionList = response.rows.map((val) => val["question_body"]);
       questionList = [...new Set(questionList)];
 
