@@ -1,3 +1,5 @@
+const { query } = require("express");
+
 // GET /game/worldnames
 getWorldNames = (db) => (req, res, next) => {
   const queryText = "SELECT * FROM world ORDER BY world_id;";
@@ -91,7 +93,7 @@ getStoryData = (db) => (req, res, next) => {
   AND player.player_name = '${player_name}'),
   min_level AS
   (SELECT MIN(level.level_id) AS level FROM tower, level
-  WHERE tower.tower_id = level.level_id
+  WHERE tower.tower_id = level.tower_id
   AND tower.tower_name = '${tower_name}'),
   combined AS
   (SELECT * FROM current_level UNION SELECT * FROM min_level),
@@ -105,11 +107,13 @@ getStoryData = (db) => (req, res, next) => {
   AND question.question_id = answer.question_id
   AND question.question_id IN (SELECT * FROM questions)`;
 
+  console.log(queryText)
   db.query(queryText, (err, response) => {
     if (err) {
       console.log("Error getting rows: ", err.detail);
       res.status(500).json({ message: err });
     } else {
+      console.log(response.rows)
       var questionList = response.rows.map((val) => val["question_body"]);
       questionList = [...new Set(questionList)];
 
