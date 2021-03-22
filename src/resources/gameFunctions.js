@@ -264,9 +264,9 @@ getLeaderBoardLevel = (db) => (req, res, next) => {
       var targetPlayerData = [];
       const data = response.rows.map((val, idx) => {
         if (player_name && val.player_name === player_name) {
-          targetPlayerData = [idx + 1, val.total];
+          targetPlayerData = [idx + 1, parseInt(val.total)];
         }
-        return [val.player_name, val.total];
+        return [val.player_name, parseInt(val.total)];
       });
 
       res.status(200).json(player_name ? targetPlayerData : data);
