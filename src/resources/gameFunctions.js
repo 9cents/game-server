@@ -29,6 +29,7 @@ getTowerNames = (db) => (req, res, next) => {
       worldList = response.rows.map((val) => {
         return val["world_id"];
       });
+      worldList = [...new Set(worldList)];
       towerList = worldList.map((world) => {
         return response.rows
           .filter((row) => {
@@ -170,7 +171,6 @@ getChallengeData = (db) => (req, res, next) => {
       res.status(500).json({ message: err });
     } else {
       questionList = response.rows.map((val) => val["question_body"]);
-      questionList = [...new Set(questionList)];
 
       temp = questionList.map((qns) => {
         var correctIndex = -1;
