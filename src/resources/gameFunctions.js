@@ -415,7 +415,8 @@ putIncrementLevel = (db) => (req, res, next) => {
   INSERT INTO progress
   SELECT (SELECT player_id FROM player WHERE player_name = '${player_name}'), 
   (SELECT tower_id FROM tower WHERE tower_name = '${tower_name}'), 
-  (SELECT MIN(level_id)+1 FROM level WHERE tower_id = 1)
+  (SELECT MIN(level_id)+1 FROM level WHERE tower_id IN (SELECT tower_id FROM tower
+    WHERE tower_name = '${tower_name}'))
   WHERE NOT EXISTS (SELECT 1 FROM progress 
             WHERE tower_id IN (SELECT tower_id FROM tower WHERE tower_name = '${tower_name}')
             AND player_id IN (SELECT player_id FROM player WHERE player_name = '${player_name}'));`;
@@ -460,7 +461,8 @@ putDecrementLevel = (db) => (req, res, next) => {
   INSERT INTO progress
   SELECT (SELECT player_id FROM player WHERE player_name = '${player_name}'), 
   (SELECT tower_id FROM tower WHERE tower_name = '${tower_name}'), 
-  (SELECT MIN(level_id) FROM level WHERE tower_id = 1)
+  (SELECT MIN(level_id) FROM level WHERE tower_id IN (SELECT tower_id FROM tower
+    WHERE tower_name = '${tower_name}'))
   WHERE NOT EXISTS (SELECT 1 FROM progress 
             WHERE tower_id IN (SELECT tower_id FROM tower WHERE tower_name = '${tower_name}')
             AND player_id IN (SELECT player_id FROM player WHERE player_name = '${player_name}'));`;
