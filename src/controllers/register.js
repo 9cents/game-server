@@ -1,5 +1,12 @@
 const bcrypt = require("bcrypt-nodejs");
-
+/** @module Game_Registration*/
+/**
+ * @name registerHandler
+ * @description Returns middleware function that registers a new player sends success/failure as response.
+ * @function
+ * @param {object} db - The postpresql db instance
+ * @return {function} - The middleware function
+ */
 const registerHandler = (db) => (req, res) => {
   const query = {
     name: req.body.name,

@@ -1,5 +1,13 @@
 const bcrypt = require("bcrypt-nodejs");
+/** @module Game_Login*/
 
+/**
+ * @name loginHandler
+ * @description Returns middleware function that authenticates a player's credentials and sends success/failure as response.
+ * @function
+ * @param {object} db - The postpresql db instance
+ * @return {function} - The middleware function
+ */
 const loginHandler = (db) => (req, res) => {
   const query = {
     name: req.body.name,
