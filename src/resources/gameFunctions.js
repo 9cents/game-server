@@ -170,13 +170,17 @@ getChallengeData = (db) => (req, res, next) => {
       console.log("Error getting rows: ", err.detail);
       res.status(500).json({ message: err });
     } else {
-      var questionList = response.rows.map((val) => val["question_body"]);
-      questionList = [...new Set(questionList)];
+      var questionList = response.rows
+        .filter(function(val, idx, self) {
+          return idx % 4 == 0;
+        })
+        .map((val) => val["question_body"]);
 
       temp = questionList.map((qns) => {
         var correctIndex = -1;
         const answers = response.rows
           .filter((row) => row["question_body"] === qns)
+          .filter((val, idx, self) => self.indexOf(val) === idx)
           .map((val, idx) => {
             if (val["correct"]) {
               correctIndex = idx;
