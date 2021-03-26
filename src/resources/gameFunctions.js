@@ -170,7 +170,8 @@ getChallengeData = (db) => (req, res, next) => {
       console.log("Error getting rows: ", err.detail);
       res.status(500).json({ message: err });
     } else {
-      questionList = response.rows.map((val) => val["question_body"]);
+      var questionList = response.rows.map((val) => val["question_body"]);
+      questionList = [...new Set(questionList)];
 
       temp = questionList.map((qns) => {
         var correctIndex = -1;
