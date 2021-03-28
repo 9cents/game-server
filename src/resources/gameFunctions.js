@@ -583,6 +583,63 @@ putDecrementLevel = (db) => (req, res, next) => {
   });
 };
 
+/**
+ * @name getPossibleChallengeQuestions
+ * @description Returns middleware that retreives all questions 
+ * that the player has answered correctly
+ * and groups them by the worlds they belong to and sends as response.
+ * @function
+ * @param {object} db - The postpresql db instance
+ * @return {function} - The middleware function
+ */
+getPossibleChallengeQuestions = (db) => (req, res, next) => {
+  const params = req.query;
+  const player_name = params["player_name"];
+
+  if (!player_name) {
+    res.status(422).json({ message: "Missing field in request." });
+    return;
+  }
+
+  const queryText = `WITH ans AS
+  (SELECT DISTINCT response.answer_id, answer.question_id 
+   FROM response, answer, player
+  WHERE response.answer_id = answer.answer_id
+  AND answer.correct = True
+  AND response.player_id = player.player_id
+  AND player.player_name = '${player_name}')
+  
+  SELECT world.world_id, question_body FROM question, ans, world, tower, level
+  WHERE question.question_id = ans.question_id
+  AND question.level_id = level.level_id
+  AND level.tower_id = tower.tower_id
+  AND tower.world_id = world.world_id
+  ORDER BY world_id;`;
+
+  db.query(queryText, (err, response) => {
+    if (err) {
+      console.log("Error getting rows:", err.detail);
+      res.status(500).json({ message: err });
+    } else {
+      // get list of world ids
+      worldList = response.rows.map((val) => {
+        return val["world_id"];
+      });
+      // get unique world ids only
+      worldList = [...new Set(worldList)];
+      // get questions only
+      worldQuestions = worldList.map((world) => {
+        return response.rows
+          .filter((row) => {
+            return row["world_id"] === world;
+          })
+          .map((val) => val["question_body"]);
+      });
+      res.status(200).json(worldQuestions);
+    }
+  });
+};
+
 module.exports = {
   getWorldNames,
   getTowerNames,
@@ -596,4 +653,5 @@ module.exports = {
   putGameResponse,
   putIncrementLevel,
   putDecrementLevel,
+  getPossibleChallengeQuestions,
 };

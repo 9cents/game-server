@@ -18,6 +18,7 @@ const {
   putIncrementLevel,
   putDecrementLevel,
   getTowerNames,
+  getPossibleChallengeQuestions,
 } = require("./gameFunctions");
 
 resourcesSchemas.forEach((resource) => {
@@ -38,5 +39,9 @@ router.put("/game/dungeon", putGameDungeon(db));
 router.put("/game/response", putGameResponse(db));
 router.put("/game/increment", putIncrementLevel(db));
 router.put("/game/decrement", putDecrementLevel(db));
+router.get(
+  "/game/possiblechallengequestions",
+  getPossibleChallengeQuestions(db)
+);
 
 module.exports = router;
