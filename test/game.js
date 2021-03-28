@@ -60,7 +60,8 @@ describe('Game', function() {
      */
     context('/GET information', () => {
         var player = {
-            player_name: "Desmond"
+            player_name: "Test Player",
+            tower_name: "Introduction"
         };
         
         it('Get all worlds', done => {
@@ -93,7 +94,17 @@ describe('Game', function() {
                 })
         });
 
-        it('Get all dungeon questions', done => {
+        it('Get current set of questions on a tower', done => {
+            chai.request(server)
+                .get('/game/storydata?player_name=' + player.player_name +"&tower_name=" + player.tower_name)
+                .end((err, res) => {
+                    // console.debug(res.body)
+                    res.should.have.status(200);
+                    done();
+                })
+        });
+
+        it('Get all dungeon questions of a player', done => {
             chai.request(server)
                 .get('/game/challengedata?player_name=' + player.player_name)
                 .end((err, res) => {
@@ -103,9 +114,9 @@ describe('Game', function() {
                 })
         });
 
-        it('Get all leaderboard entries', done => {
+        it('Get all level leaderboard entries', done => {
             chai.request(server)
-                .get('/game/leaderboard')
+                .get('/game/leaderboardlevel')
                 .end((err, res) => {
                     // console.debug(res.body)
                     res.should.have.status(200);
@@ -113,9 +124,29 @@ describe('Game', function() {
                 })
         });
 
-        it('Get a single leaderboard entry', done => {
+        it('Get a single level leaderboard entry', done => {
             chai.request(server)
-                .get('/game/leaderboard?player_name=' + player.player_name)
+                .get('/game/leaderboardlevel?player_name=' + player.player_name)
+                .end((err, res) => {
+                    // console.debug(res.body)
+                    res.should.have.status(200);
+                    done();
+                })
+        });
+
+        it('Get all accuracy leaderboard entries', done => {
+            chai.request(server)
+                .get('/game/leaderboardaccuracy')
+                .end((err, res) => {
+                    // console.debug(res.body)
+                    res.should.have.status(200);
+                    done();
+                })
+        });
+
+        it('Get a single accuracy leaderboard entry', done => {
+            chai.request(server)
+                .get('/game/leaderboardaccuracy?player_name=' + player.player_name)
                 .end((err, res) => {
                     // console.debug(res.body)
                     res.should.have.status(200);
@@ -129,7 +160,8 @@ describe('Game', function() {
      */
     context('/PUT dungeon', () => {
         var tplayer = {
-            player_name: "Test Player"
+            player_name: "Test Player",
+            tower_name: "Introduction"
         };
 
         it('Update dungeon questions', done => {
@@ -149,6 +181,41 @@ describe('Game', function() {
                     done();
                 })
         });
+
+        it('Increment level', done => {
+            chai.request(server)
+                .put('/game/increment?player_name=' + tplayer.player_name + "&tower_name=" + tplayer.tower_name)
+                .end((err, res) => {
+                    // console.debug(res.body)
+                    res.should.have.status(200);
+                    done();
+                })
+        });
+
+        it('Decrement level', done => {
+            chai.request(server)
+                .put('/game/decrement?player_name=' + tplayer.player_name + "&tower_name=" + tplayer.tower_name)
+                .end((err, res) => {
+                    // console.debug(res.body)
+                    res.should.have.status(200);
+                    done();
+                })
+        });
+
+        it('Add response', done => {
+            chai.request(server)
+                .put('/game/response?player_name=' + tplayer.player_name)
+                .set('content-type', 'application/json')
+                .send({
+                    question_body: "What is the course name?",
+                    answer_body: "Artificial Intelligence"
+                })
+                .end((err, res) => {
+                    // console.debug(res.body)
+                    res.should.have.status(200);
+                    done();
+                })
+        });
     })
 
     /*
@@ -159,6 +226,41 @@ describe('Game', function() {
         player_name: "Test Player"
     }
 
+    it('Delete existing progress', done => {
+        chai.request(server)
+                .get('/player?player_name=' + user.player_name)
+                .end((err, res) => {
+                    // console.log(res.body)
+                    chai.request(server)
+                        .delete('/progress')
+                        .set('content-type', 'application/json')
+                        .send({player_id: res.body.data[0].player_id})
+                        .end((err, resp) => {
+                            // console.error(resp.body);
+                            resp.should.have.status(200);
+                            expect(resp.body.message).to.equal("Row(s) deleted.");
+                            done();
+                        })
+                })
+    });
+
+    it('Delete existing response', done => {
+        chai.request(server)
+                .get('/player?player_name=' + user.player_name)
+                .end((err, res) => {
+                    chai.request(server)
+                        .delete('/response')
+                        .set('content-type', 'application/json')
+                        .send({player_id: res.body.data[0].player_id})
+                        .end((err, resp) => {
+                            // console.error(resp.body);
+                            resp.should.have.status(200);
+                            expect(resp.body.message).to.equal("Row(s) deleted.");
+                            done();
+                        })
+                })
+    });
+    
     it('Delete existing test dungeon', done => {
         chai.request(server)
             .delete('/dungeon')
