@@ -585,7 +585,7 @@ putDecrementLevel = (db) => (req, res, next) => {
 
 /**
  * @name getPossibleChallengeQuestions
- * @description Returns middleware that retreives all questions 
+ * @description Returns middleware that retreives all questions
  * that the player has answered correctly
  * and groups them by the worlds they belong to and sends as response.
  * @function
@@ -609,11 +609,15 @@ getPossibleChallengeQuestions = (db) => (req, res, next) => {
   AND response.player_id = player.player_id
   AND player.player_name = '${player_name}')
   
-  SELECT world.world_id, question_body FROM question, ans, world, tower, level
-  WHERE question.question_id = ans.question_id
-  AND question.level_id = level.level_id
-  AND level.tower_id = tower.tower_id
-  AND tower.world_id = world.world_id
+  SELECT world.world_id, question_body FROM tower 
+  JOIN level
+  ON level.tower_id = tower.tower_id
+  JOIN question
+  on question.level_id = level.level_id
+  JOIN ans 
+  ON question.question_id = ans.question_id
+  RIGHT JOIN world
+  ON tower.world_id = world.world_id
   ORDER BY world_id;`;
 
   db.query(queryText, (err, response) => {
@@ -633,7 +637,20 @@ getPossibleChallengeQuestions = (db) => (req, res, next) => {
           .filter((row) => {
             return row["world_id"] === world;
           })
-          .map((val) => val["question_body"]);
+          .map((val) => {
+            // console.log(val);
+            if (val["question_body"] !== null) {
+              return val["question_body"];
+            } else {
+              return;
+            }
+          });
+      });
+      worldQuestions = worldQuestions.map((val) => {
+        if (JSON.stringify(val) === "[null]") {
+          return [];
+        }
+        return val;
       });
       res.status(200).json(worldQuestions);
     }
