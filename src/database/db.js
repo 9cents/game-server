@@ -2,6 +2,7 @@
 const conf = require("./db.config");
 const { Pool } = require("pg");
 
+// singleton of database object
 const pgSingleton = (() => {
   var instance;
   init = async () => {
