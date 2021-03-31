@@ -1,0 +1,2754 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 12.6 (Ubuntu 12.6-0ubuntu0.20.04.1)
+-- Dumped by pg_dump version 12.4
+
+-- Started on 2021-03-29 02:12:03
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 213 (class 1259 OID 16619)
+-- Name: answer; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE public.answer (
+    answer_id integer NOT NULL,
+    answer_body character varying(255) NOT NULL,
+    question_id integer NOT NULL,
+    correct boolean NOT NULL
+);
+
+
+ALTER TABLE public.answer OWNER TO admin;
+
+--
+-- TOC entry 212 (class 1259 OID 16617)
+-- Name: answers_id_seq; Type: SEQUENCE; Schema: public; Owner: admin
+--
+
+CREATE SEQUENCE public.answers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.answers_id_seq OWNER TO admin;
+
+--
+-- TOC entry 3078 (class 0 OID 0)
+-- Dependencies: 212
+-- Name: answers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: admin
+--
+
+ALTER SEQUENCE public.answers_id_seq OWNED BY public.answer.answer_id;
+
+
+--
+-- TOC entry 218 (class 1259 OID 16738)
+-- Name: dungeon; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE public.dungeon (
+    player_name character varying(50) NOT NULL,
+    question_1 integer,
+    question_2 integer,
+    question_3 integer,
+    question_4 integer,
+    question_5 integer,
+    lock boolean NOT NULL
+);
+
+
+ALTER TABLE public.dungeon OWNER TO admin;
+
+--
+-- TOC entry 217 (class 1259 OID 16672)
+-- Name: instructor; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE public.instructor (
+    instructor_id integer NOT NULL,
+    instructor_name character varying(50) NOT NULL,
+    password character varying(255),
+    question_1 integer,
+    question_2 integer,
+    question_3 integer,
+    question_4 integer,
+    question_5 integer,
+    lock boolean
+);
+
+
+ALTER TABLE public.instructor OWNER TO admin;
+
+--
+-- TOC entry 216 (class 1259 OID 16670)
+-- Name: instructors_id_seq; Type: SEQUENCE; Schema: public; Owner: admin
+--
+
+CREATE SEQUENCE public.instructors_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.instructors_id_seq OWNER TO admin;
+
+--
+-- TOC entry 3079 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: instructors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: admin
+--
+
+ALTER SEQUENCE public.instructors_id_seq OWNED BY public.instructor.instructor_id;
+
+
+--
+-- TOC entry 207 (class 1259 OID 16562)
+-- Name: level; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE public.level (
+    level_id integer NOT NULL,
+    level_name character varying(50) NOT NULL,
+    tower_id integer
+);
+
+
+ALTER TABLE public.level OWNER TO admin;
+
+--
+-- TOC entry 206 (class 1259 OID 16560)
+-- Name: levels_id_seq; Type: SEQUENCE; Schema: public; Owner: admin
+--
+
+CREATE SEQUENCE public.levels_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.levels_id_seq OWNER TO admin;
+
+--
+-- TOC entry 3080 (class 0 OID 0)
+-- Dependencies: 206
+-- Name: levels_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: admin
+--
+
+ALTER SEQUENCE public.levels_id_seq OWNED BY public.level.level_id;
+
+
+--
+-- TOC entry 209 (class 1259 OID 16588)
+-- Name: player; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE public.player (
+    player_id integer NOT NULL,
+    player_name character varying(50) NOT NULL,
+    "character" character varying(50),
+    password character varying(255)
+);
+
+
+ALTER TABLE public.player OWNER TO admin;
+
+--
+-- TOC entry 208 (class 1259 OID 16586)
+-- Name: players_id_seq; Type: SEQUENCE; Schema: public; Owner: admin
+--
+
+CREATE SEQUENCE public.players_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.players_id_seq OWNER TO admin;
+
+--
+-- TOC entry 3081 (class 0 OID 0)
+-- Dependencies: 208
+-- Name: players_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: admin
+--
+
+ALTER SEQUENCE public.players_id_seq OWNED BY public.player.player_id;
+
+
+--
+-- TOC entry 219 (class 1259 OID 16793)
+-- Name: progress; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE public.progress (
+    player_id integer NOT NULL,
+    tower_id integer NOT NULL,
+    level_id integer NOT NULL
+);
+
+
+ALTER TABLE public.progress OWNER TO admin;
+
+--
+-- TOC entry 211 (class 1259 OID 16606)
+-- Name: question; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE public.question (
+    question_id integer NOT NULL,
+    question_body character varying(255) NOT NULL,
+    level_id integer NOT NULL
+);
+
+
+ALTER TABLE public.question OWNER TO admin;
+
+--
+-- TOC entry 210 (class 1259 OID 16604)
+-- Name: questions_id_seq; Type: SEQUENCE; Schema: public; Owner: admin
+--
+
+CREATE SEQUENCE public.questions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.questions_id_seq OWNER TO admin;
+
+--
+-- TOC entry 3082 (class 0 OID 0)
+-- Dependencies: 210
+-- Name: questions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: admin
+--
+
+ALTER SEQUENCE public.questions_id_seq OWNED BY public.question.question_id;
+
+
+--
+-- TOC entry 215 (class 1259 OID 16632)
+-- Name: response; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE public.response (
+    response_id integer NOT NULL,
+    player_id integer NOT NULL,
+    answer_id integer NOT NULL
+);
+
+
+ALTER TABLE public.response OWNER TO admin;
+
+--
+-- TOC entry 214 (class 1259 OID 16630)
+-- Name: responses_id_seq; Type: SEQUENCE; Schema: public; Owner: admin
+--
+
+CREATE SEQUENCE public.responses_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.responses_id_seq OWNER TO admin;
+
+--
+-- TOC entry 3083 (class 0 OID 0)
+-- Dependencies: 214
+-- Name: responses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: admin
+--
+
+ALTER SEQUENCE public.responses_id_seq OWNED BY public.response.response_id;
+
+
+--
+-- TOC entry 205 (class 1259 OID 16541)
+-- Name: tower; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE public.tower (
+    tower_id integer NOT NULL,
+    tower_name character varying(50) NOT NULL,
+    lock boolean NOT NULL,
+    world_id integer NOT NULL
+);
+
+
+ALTER TABLE public.tower OWNER TO admin;
+
+--
+-- TOC entry 204 (class 1259 OID 16539)
+-- Name: towers_id_seq; Type: SEQUENCE; Schema: public; Owner: admin
+--
+
+CREATE SEQUENCE public.towers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.towers_id_seq OWNER TO admin;
+
+--
+-- TOC entry 3084 (class 0 OID 0)
+-- Dependencies: 204
+-- Name: towers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: admin
+--
+
+ALTER SEQUENCE public.towers_id_seq OWNED BY public.tower.tower_id;
+
+
+--
+-- TOC entry 203 (class 1259 OID 16509)
+-- Name: world; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE public.world (
+    world_id integer NOT NULL,
+    world_name character varying(50) NOT NULL
+);
+
+
+ALTER TABLE public.world OWNER TO admin;
+
+--
+-- TOC entry 202 (class 1259 OID 16507)
+-- Name: worlds_id_seq; Type: SEQUENCE; Schema: public; Owner: admin
+--
+
+CREATE SEQUENCE public.worlds_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.worlds_id_seq OWNER TO admin;
+
+--
+-- TOC entry 3085 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: worlds_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: admin
+--
+
+ALTER SEQUENCE public.worlds_id_seq OWNED BY public.world.world_id;
+
+
+--
+-- TOC entry 2886 (class 2604 OID 16829)
+-- Name: answer answer_id; Type: DEFAULT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.answer ALTER COLUMN answer_id SET DEFAULT nextval('public.answers_id_seq'::regclass);
+
+
+--
+-- TOC entry 2888 (class 2604 OID 16830)
+-- Name: instructor instructor_id; Type: DEFAULT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.instructor ALTER COLUMN instructor_id SET DEFAULT nextval('public.instructors_id_seq'::regclass);
+
+
+--
+-- TOC entry 2883 (class 2604 OID 16831)
+-- Name: level level_id; Type: DEFAULT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.level ALTER COLUMN level_id SET DEFAULT nextval('public.levels_id_seq'::regclass);
+
+
+--
+-- TOC entry 2884 (class 2604 OID 16832)
+-- Name: player player_id; Type: DEFAULT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.player ALTER COLUMN player_id SET DEFAULT nextval('public.players_id_seq'::regclass);
+
+
+--
+-- TOC entry 2885 (class 2604 OID 16833)
+-- Name: question question_id; Type: DEFAULT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.question ALTER COLUMN question_id SET DEFAULT nextval('public.questions_id_seq'::regclass);
+
+
+--
+-- TOC entry 2887 (class 2604 OID 16834)
+-- Name: response response_id; Type: DEFAULT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.response ALTER COLUMN response_id SET DEFAULT nextval('public.responses_id_seq'::regclass);
+
+
+--
+-- TOC entry 2882 (class 2604 OID 16835)
+-- Name: tower tower_id; Type: DEFAULT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.tower ALTER COLUMN tower_id SET DEFAULT nextval('public.towers_id_seq'::regclass);
+
+
+--
+-- TOC entry 2881 (class 2604 OID 16836)
+-- Name: world world_id; Type: DEFAULT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.world ALTER COLUMN world_id SET DEFAULT nextval('public.worlds_id_seq'::regclass);
+
+
+--
+-- TOC entry 3066 (class 0 OID 16619)
+-- Dependencies: 213
+-- Data for Name: answer; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+COPY public.answer (answer_id, answer_body, question_id, correct) FROM stdin;
+241	Net Centric Computing	30	f
+242	Compiler Techniques	30	f
+243	CZ3003	31	t
+244	CZ3005	31	f
+246	CZ3007	31	f
+239	Artificial Intelligence	30	f
+240	Software Systems Analysis and Design	30	t
+247	1	32	f
+248	2	32	f
+249	4	32	f
+250	3	32	t
+251	Lin Shang Wei - Yu Han	33	t
+252	Lin Shang Wei - Shen Zhi Qi	33	f
+253	Yu Han - Shen Zhi Qi	33	f
+254	Kevin Anthony James - Shen Zhi Qi	33	f
+255	CZ1006. Yes.	34	f
+256	CZ2006. Yes.	34	t
+257	CZ1006. No.	34	f
+258	CZ2006. No.	34	f
+259	40% Lab Project. 60% Final Exam.	35	f
+260	50% Lab Project. 50% Final Exam.	35	f
+261	70% Lab Project. 30% Final Exam.	35	f
+262	60% Lab Project. 40% Final Exam.	35	t
+263	Create a social game for teaching and learning of software engineering courses	36	t
+264	Create a financial literacy game for university students	36	f
+265	Create a social game for teaching and learning of sociology courses	36	f
+266	Create a social awareness game of the income discrepancy in Singapore	36	f
+267	3	37	f
+268	4	37	f
+269	6	37	f
+270	5	37	t
+271	Requirements Elicitation and Analysis	38	t
+272	Architecture Design	38	f
+273	Component Design and Implementation	38	f
+274	Integration Testing	38	f
+275	Lab 1	39	t
+276	Lab 5	39	f
+277	Lab 3	39	f
+278	SRS is not required	39	f
+279	Requirements Elicitation and Analysis	40	f
+280	Architecture Design	40	f
+281	Component Design and Implementation	40	f
+282	Integration Testing	40	t
+283	GUI design	41	f
+284	Interior design	41	f
+285	Architecture design	41	t
+286	Database design	41	f
+289	Irrelevant, there is no need to use open source game engines	42	f
+290	No, all open source game engines are not allowed	42	f
+291	Difficult for teachers to stimulate students' learning interest	43	f
+292	Lack a more continuous and interactice after class learning activity	43	f
+293	All of the above	43	t
+294	Difficult for teachers to continuously and statistically assess students' overall mastery	43	f
+295	Students can learn effectively using fragmented time	44	f
+296	Teachers feel more added burden compared to manual teaching activities	44	t
+297	Leaderboard can keep students engaged for getting higher ranks	44	f
+298	Students can challenge each other by designing their own dungeons	44	f
+299	April 30th, 2021	45	t
+300	April 28th, 2021	45	f
+301	April 29th, 2021	45	f
+302	April 27th, 2021	45	f
+303	1.5-hour closed book	46	f
+304	2-hour closed book	46	t
+305	1.5-hour online open book	46	f
+306	2-hour online open book	46	f
+307	Requirements Elicitation	47	t
+308	Requirements Analysis	47	f
+309	Architectural Design	47	f
+310	Formal structural model	47	f
+311	Requirements Elicitation and Analysis	48	f
+312	Architectural Style and Quality	48	t
+313	Architectural Design	48	f
+314	Formal structural model	48	f
+315	Formal behaviour model	49	f
+316	Software design principles	49	f
+317	Visual notation	49	f
+318	Visual paradigm	49	t
+319	1	50	f
+320	3	50	t
+321	4	50	f
+322	2	50	f
+323	Flexibility	51	t
+324	Performance	51	f
+325	Security	51	f
+326	Availability	51	f
+327	Larger source size	52	f
+328	Larger number of users	52	f
+329	Shorter project lifespan	52	t
+330	Larger number of developers	52	f
+331	Cheap cost	53	f
+332	Tight schedule constraint	53	t
+333	All options are incorrect	53	f
+334	Less maintenance	53	f
+335	Complexity	54	f
+336	Conformity	54	f
+337	Changeability	54	f
+338	Classifiability	54	t
+339	It is concerned with identifying the purpose of a software system	55	f
+340	It refers to the activity of development, elicitation, specification, analysis and management of the stakeholder requirements	55	f
+341	All of the above	55	t
+342	It captures real world needs of staeholders affected by a software system	55	f
+343	"How"	56	f
+344	"Where"	56	t
+345	"What"	56	f
+346	"Who"	56	f
+347	Examine documents	57	f
+348	Interview stakeholders	57	f
+349	Prototyping	57	f
+350	All of the above	57	t
+351	Descriptions of current or completing products	58	f
+352	Focus groups of representative customers	58	t
+353	Help desk problem report	58	f
+354	Industry standard or government regulations	58	f
+287	Yes, all open source game engines are allowed	42	t
+245	CZ3006	31	f
+288	No, only Unity allowed	42	f
+355	Observations	59	f
+356	Prototyping	59	f
+357	Testing	59	t
+358	Questionnaires	59	f
+359	Project managers	60	f
+360	Documentation writers	60	f
+361	Interior designer	60	t
+362	Legal staff	60	f
+363	Increase market share by xx%	61	f
+364	Save $xx per year on electricity wasted by inefficient units	61	f
+365	Noise level cannot exceed xx dB at 20 meters	61	t
+366	Save $xx in maintenance costs by reitiring legacy system X	61	f
+367	Format of a charge number is a 3-character department prefix, a hyphen, and a 6-digit project code	62	t
+368	Files submitted electronically cannot exceed 10 MB	62	f
+369	Program should be written in Java	62	f
+370	GUI button labels must conform to product family style guide	62	f
+371	Functional Requirement	63	f
+372	Data Definition	63	t
+373	Quality Attribute	63	f
+374	Constraint	63	f
+375	Functional Requirement	64	t
+376	Constraint	64	f
+377	Business Rule	64	f
+378	Solution Idea	64	f
+379	Task analysis	65	f
+380	Interview stakeholders	65	f
+381	Prototyping	65	f
+382	Designing GUI	65	t
+383	It is useful for requirements, design and implementation	66	t
+384	It facilitates elicitation workshops with users and analysts	66	f
+385	It looks at what information the user has when performing a particular task	66	f
+386	None of the above	66	f
+387	Functional Requirement	67	f
+388	Solution Idea	67	f
+389	External Interface Requirement	67	f
+390	Constraint	67	t
+391	Constraint	68	f
+392	Functional Requirement	68	f
+393	Quality Attribute	68	t
+394	Business Rule	68	f
+395	Only the lead site operator can override a safety alert	69	t
+396	Must read signals from all Nixdorf 3XXX pressure sensors	69	f
+397	Noise level cannot exceed xx dB at 20 meters	69	f
+398	Save $xx per year on electricity wasted by inefficient units	69	f
+399	Focus groups of representative customers	70	f
+400	Facilitated elicitation workshops with users and analysts	70	f
+401	Industry standard or government regulations	70	t
+402	Product champions as key customer representatives	70	f
+403	Apply methods like use cases or scenarios	71	t
+404	Look at what information the user has when performing a particular task	71	f
+405	Facilitated elicitation workshops with users and analysts	71	f
+406	Help desk problem report	71	f
+407	Functional Requirement	76	t
+408	Solution Idea	76	f
+409	Constraint	76	f
+410	Business Rule	76	f
+411	Functional Requirement	77	f
+412	Data Definition	77	f
+413	External Interface Requirement	77	f
+414	Solution Idea	77	t
+415	A-B-C	78	f
+416	A-C-B	78	f
+417	B-C-A	78	f
+418	B-A-C	78	t
+419	Look for incomplete requirements	79	f
+420	Look for ambiguous requirements	79	f
+421	All of the above	79	t
+422	Look for conflicting requirements	79	f
+423	Decision Table	80	f
+424	Sequence Diagram	80	t
+425	Entity-Relationship Diagram	80	f
+426	Data Flow Diagram	80	f
+427	True	81	t
+428	False	81	f
+429	Not enough information to determine	81	f
+430	None of the above	81	f
+431	Flow of events	82	f
+432	Alternative Flows	82	f
+433	All of the above	82	t
+434	Exceptions	82	f
+435	CRUDL Matrix	83	f
+436	Context diagram	83	f
+437	Class diagram	83	t
+438	Entity-Relationship Diagram	83	f
+439	True	84	t
+440	False	84	f
+441	None of the above	84	f
+442	Not enough information to determine	84	f
+443	One-to-one	86	f
+444	One-to-many	86	f
+445	Many-to-many	86	f
+446	All of the above	86	t
+447	Create, Read, Update, Delete, Layer	87	f
+448	Create, Read, Undo, Delete, Layer	87	f
+449	Create, Read, Update, Delete, List	87	t
+450	Create, Read, Undo, Delete, List	87	f
+451	Tactile	88	t
+452	Formal	88	f
+453	Graphical	88	f
+454	Textual	88	f
+455	Manage versions and changes	89	f
+456	Define traceability links	89	f
+457	Control access	89	f
+458	All of the above	89	t
+459	Software, hardware and system engineers	90	f
+460	Maintenance and support team	90	f
+461	Project management	90	f
+462	Tasting group	90	t
+463	Modularity	91	f
+464	Multiple responsibility principle	91	t
+465	Open Close Principle	91	f
+466	Principle of least knowledge	91	f
+848	Entire software is sub-divided into coherent components that are in-turn sub-divided until top components are reached	196	f
+471	Repeat yourself	93	f
+470	None of the options	92	t
+556	ii and iii only	121	t
+477	Single responsibility principle	94	f
+479	A component should only know about the internal details of other components	95	f
+480	Objects in a program should be replacable with instances of their subtypes without altering the correctness of that program	95	f
+481	Software entities like classes, modules and functions should be open for extension but closed for modifications	95	t
+482	One should depend upon abstractions and not upon concretions	95	f
+557	i, ii and iii	121	f
+499	Efficiency	102	f
+500	Testability	102	f
+501	Flexibility	102	f
+502	All of the above	102	t
+555	ii only	121	f
+558	None of the options	121	f
+523	Components	113	t
+524	System	113	f
+525	Connectors	113	f
+526	None of the above	113	f
+539	Architecture is abstract	117	f
+540	Architecture is about structure	117	f
+541	All are correct	117	t
+542	Architecture is purposeful	117	f
+543	Square corner rectangles	118	f
+544	None of the above	118	f
+547	Hardware component	119	f
+548	Passive software component	119	t
+549	Active software component	119	f
+550	None of the above	119	f
+559	1	122	f
+560	3	122	t
+561	2	122	f
+562	4	122	f
+679	Analytical skill	154	f
+504	i and iii only	104	f
+484	Single responsibility principle	96	f
+505	ii and iii only	104	f
+507	i only	105	t
+510	i, ii and iii	105	f
+508	i and ii only	105	f
+509	i and iii only	105	f
+513	iii only	106	f
+514	i and ii only	106	f
+512	ii only	106	f
+511	i and ii only	106	t
+515	Product revision	108	f
+516	Product transition	108	f
+517	Product operations	108	t
+518	None of the above	108	f
+522	Interoperability	109	f
+519	Reusability	109	f
+520	Reliability	109	t
+521	Portability	109	f
+473	Interface integration principle	93	f
+472	Maximize upfront design	93	f
+474	None of the above	93	t
+491	i only	100	f
+494	ii only	100	f
+492	i and ii only	100	t
+493	ii and iii only	100	f
+478	None of the options	94	f
+476	Conceptual integrity	94	f
+495	i only	101	f
+483	Modularity	96	t
+498	I, ii and iii 	101	t
+496	i and iii only	101	f
+485	Principle of least knowledge	96	f
+497	ii and iii only	101	f
+489	Design patterns: reuse of designs	97	f
+490	Evolutionary design: left-right	97	t
+488	Compositional design: bottom-up	97	f
+487	Decompositional design: top-down	97	f
+529	Real and Imaginary	114	f
+546	Rectangles with corners cut off	118	f
+530	Software and Hardware	114	f
+545	Round corner rectangles	118	t
+531	is executable	115	f
+532	is indicated via dotted lines	115	t
+533	is indicated via solid lines	115	f
+534	is hidden	115	f
+537	stores data as its internal state	116	f
+536	is indicated via dotted lines	116	f
+538	is hidden	116	f
+535	is executable	116	t
+527	Active and Passive	114	t
+528	Specific and Vague	114	f
+552	Variables	120	f
+551	Files	120	t
+553	Databases	120	f
+554	Constants	120	f
+564	Entity Component Boundary	123	f
+563	Entity Control Boundary	123	t
+565	Entity Connector Boundary	123	f
+566	Entity Central Boundary	123	f
+567	ii only	124	f
+568	i and iii only	124	f
+569	ii and iii only	124	f
+570	i, ii and iii	124	t
+574	None are correct	125	f
+572	i and ii only	125	f
+573	i, ii and iii	125	t
+571	i only	125	f
+576	Essential elements-System perspective-Structure-Behavior-Stakeholders	126	t
+575	Essential elements-System perspective-Safety-Behavior-Scaleability	126	f
+578	Essential elements-System perspective-Stakeholders-Behavior-Scaleability	126	f
+577	Essential elements-System perspective-Structure-Behavior-Security	126	f
+579	Initial, Evolving, Formalizing	127	t
+847	Entire software is sub-divided into coherent components that are in-turn sub-divided until base components are reached	196	t
+595	Its purpose is to de-couple the supplying classes from direct access by the client	132	f
+596	It is a class through which external client classes can access a set of functions in supplier classes	132	f
+597	Its implementation overrides the functions of the supplier classes	132	t
+598	Façade classes may strongly aggregate another façade class	132	f
+599	It is an optional icon that may be shown in Component to assist in recognition of component model element	133	t
+600	It is a forwarder of service requests inside a Component	133	f
+601	It is a logical construct that identifies the application installed in the computer	133	f
+602	It is a shape or textual symbol giving explanations to a target symbol	133	f
+580	Initial, Developing, Coding	127	f
+582	Original, Developing, Coding	127	f
+611	True	136	f
+612	False, no component is typically reused	136	f
+613	False, only single components are typically reused	136	t
+614	Not enough information to determine	136	f
+623	Asynchronous	139	f
+624	Return	139	f
+625	Synchronous	139	f
+626	All are correct	139	t
+627	Source, Message, Channel, Return	140	f
+628	Source, Message, Channel, Role	140	f
+629	Source, Message, Channel, Receiver	140	t
+630	Source, Message, Channel, Reuse	140	f
+631	Buffer	141	f
+632	Broadcaster	141	f
+633	Parser	141	f
+634	All are correct	141	t
+635	It is a physical interface to a cable between the computer and peripheral	142	f
+636	It is the end point of logical communication within the OS and the start point of the communication in a computer network	142	t
+637	It is a port through which external client classes can access a set of functions in supplier classes	142	f
+638	It is a forwarder of service requests inside a Component	142	f
+581	Original, Evolving, Formalizing	127	f
+583	Product and System	128	t
+584	Product and Price	128	f
+586	Price and Security	128	f
+643	Façade design pattern	144	t
+644	Auxiliary notes	144	f
+645	SMCR model	144	f
+646	Direct calling	144	f
+647	Inversion of control	145	f
+648	Delegation connector	145	f
+649	Assembly connector	145	t
+650	Integrative component	145	f
+651	Data-Access Orientation	146	f
+652	Data-Aspect Obejct	146	f
+653	Data-Access Object	146	t
+654	Data-Aspect Orientation	146	f
+585	System and Security	128	f
+587	It precedes the implementation	129	f
+588	It informs the implementation	129	f
+589	It comprises multiple building blocks	129	f
+659	Identify, Qualify, Isolate, Make	148	t
+660	Identify, Quantify, Isolate, Make	148	f
+661	Identify, Qualify, Integrate, Make	148	f
+662	Identify, Quantify, Integrate, Make	148	f
+663	Only the lead site operator can override a safety alert	150	f
+664	Must read signals from all Nixdorf 3XXX pressure sensors	150	f
+665	Save $xx per year on electricity wasted by inefficient units	150	f
+666	System must be user-friendly and robust	150	t
+667	Business Rule	151	t
+668	Solution Idea	151	f
+669	Quality Attribute	151	f
+670	Data Definition	151	f
+671	Only the lead site operator can override a safety alert	152	f
+672	System must be user-friendly and robust	152	f
+673	Default value for the control pressure is 20.0 psi	152	f
+674	User selects the desired value from a dropdown list	152	t
+675	It applies methods like use cases or scenarios	153	f
+676	It facilitates elicitation workshops with users and analysts	153	f
+677	It looks at what information the user has when performing a particular task	153	f
+678	None of the options 	153	t
+604	Compiled Books on Software Engineering	134	f
+606	Connection-Based Software Engineering	134	f
+655	Access-Oriented Programming	147	f
+607	Library	135	t
+610	Composition	135	f
+608	Toolkit	135	f
+609	Component	135	f
+616	Focus a module on the task it is designed for	137	f
+618	Allow side effects when replacing a module	137	t
+617	Free modules from assumptions about how other systems behave	137	f
+615	Decouples the execution of a task from implementation	137	f
+619	It is an application, open source, and IoC container for the Java platform	138	f
+621	It is a popular alternative, replacement and addition to the Enterprise JavaBeans model	138	f
+622	It imposes a specific programming model	138	t
+620	Its core features have extensions for building web applications on top of the Java EE platform	138	f
+590	It cannot be hierarchical	129	t
+849	Separate base components are joined into small compound components that are in-turn joined into larger compound components until the entire software is assembled	196	f
+592	They cannot be changed several times for the same hardware	130	t
+593	They connect to the devices through the computer bus	130	f
+591	They are installed into secondary, non-volatile storage along with its host OS	130	f
+594	They provide a software interface to the devices	130	f
+680	Organizational skill	154	f
+681	Interviewing skill	154	f
+682	All of the above	154	t
+815	Controller	188	f
+817	Handler	188	f
+818	Manager	188	f
+816	Driver	188	t
+821	Connection	189	f
+819	Architecture	189	t
+822	Computer	189	f
+820	Implementation	189	f
+824	Driver	190	f
+825	Handler	190	t
+823	Controller	190	f
+826	Manager	190	f
+827	Controller	191	f
+828	Handler	191	f
+829	DatabaseManager	191	f
+812	Sequence of messages	187	t
+866	The implementations of the service provided by a software component can be enhanced without needing a commensurate change in the users	200	f
+771	A 2D outline enclosing an area	177	f
+788	Port	181	t
+775	A physical interface to a cable between the computer and peripheral	178	t
+787	System	181	f
+789	Connector	181	f
+790	Actor	181	f
+792	Composition	182	f
+751	W3T3L2Q2	156	f
+752	W3T3L2Q2 CORRECT	156	t
+753	W3T3L2Q2	156	f
+754	W3T3L2Q2	156	f
+759	W3T3L2Q4	158	f
+760	W3T3L2Q4	158	f
+761	W3T3L2Q4	158	f
+762	W3T3L2Q4 CORRECT	158	t
+763	W3T3L2Q5	159	f
+764	W3T3L2Q5	159	f
+765	W3T3L2Q5	159	f
+766	W3T3L2Q5 CORRECT	159	t
+767	W3T3L3Q2	160	f
+768	W3T3L3Q2	160	f
+791	Specification	182	f
+770	W3T3L3Q2	160	f
+779	W3T2L3Q5	179	f
+780	W3T2L3Q5 CORRECT	179	t
+781	W3T2L3Q5	179	f
+782	W3T2L3Q5	179	f
+783	W3T2L4Q2	180	f
+784	W3T2L4Q2	180	f
+785	W3T2L4Q2	180	f
+786	W3T2L4Q2 CORRECT	180	t
+811	W3T2L5Q5	187	f
+813	W3T2L5Q5	187	f
+814	W3T2L5Q5	187	f
+793	Decomposition	182	f
+794	All are correct	182	t
+795	Specification	183	f
+798	All are correct	183	f
+796	Composition	183	t
+797	Decomposition	183	f
+799	Specification	184	f
+801	Decomposition	184	t
+687	NTU repository	156	f
+689	Software frameworks	156	t
+688	Hardware frameworks	156	f
+690	CSE repository	156	f
+691	Environment	157	f
+692	Exchange with environment	157	f
+693	Subsystems	157	f
+694	All are correct	157	t
+755		157	f
+758		157	f
+756		157	f
+757		157	f
+695	dependent components	158	f
+696	acceptable to modify	158	t
+697	inter-component design built-in	158	f
+699	windowing systems	159	f
+701	mouse control	159	f
+700	menus	159	f
+704	It cannot be reused in many design scenarios and implementation instances	160	t
+769	W3T3L3Q2 CORRECT	160	f
+710	A collection of tools that users could pay to use	161	f
+707	An application that provides a standard computer service	161	t
+712	Encapsulating	162	f
+713	Inheritance	162	f
+711	Partitioning	162	f
+714	All options are correct	162	t
+717	i, ii and iii	163	f
+716	i and ii only	163	t
+715	i only	163	f
+718	iii only	163	f
+719	Analyse the reusables for appropriateness in the deisgn	164	t
+722	Uncover parts of the architecture for which reuse is a possibility	164	f
+726	None of the above	165	f
+724	False	165	f
+725	Not enough information to determine	165	f
+727	True	166	t
+730	None of the above	166	f
+728	False	166	f
+729	Not enough information to determine	166	f
+732	Reduce integration effort by putting into an architectural style	167	f
+734	Analyse the reusables for appropriateness in the design	167	f
+733	Uncover parts of the architecture for which reuse is a possibility	167	f
+738	All options are correct	168	t
+742	All options are correct	169	t
+743	Framework: Independent components; Repository: Dependent components	170	f
+741	Generating XML documents used by the XSL stylesheet	169	f
+744	Framework: Modifiable; Repository: Non-modifiable	170	f
+747	Convention over configuration	171	f
+748	Modify-Verify-Connect	171	t
+750	Authentication and authorization	171	f
+802	All are correct	184	f
+800	Composition	184	f
+804	Message	185	f
+803	Interaction	185	f
+805	Lifeline	185	t
+806	None of the options are correct	185	f
+807	Used to assemble the architecture in bottom-up strategy	186	t
+808	The lowermost are black-box view	186	f
+810	The uppermost are white-box view	186	f
+831	W3T1L3Q2	192	f
+832	W3T1L3Q2	192	f
+833	W3T1L3Q2	192	f
+834	W3T1L3Q2 CORRECT	192	t
+835	W3T1L3Q3 CORRECT	193	t
+836	W3T1L3Q3	193	f
+837	W3T1L3Q3	193	f
+838	W3T1L3Q3	193	f
+839	W3T1L3Q4	194	f
+840	W3T1L3Q4	194	f
+841	W3T1L3Q4 CORRECT	194	t
+842	W3T1L3Q4	194	f
+843	W3T1L3Q5 CORRECT	195	t
+844	W3T1L3Q5	195	f
+845	W3T1L3Q5	195	f
+846	W3T1L3Q5	195	f
+830	Connector	191	t
+851	It may have been emphasized by the customer	197	f
+850	Software functions and features are constructed in a continuous "survival of the fittest" progression 	196	f
+852	It may be inherently difficult to get right	197	f
+853	It may be more technologically complex	197	f
+854	All are correct	197	t
+856	Standard component	198	t
+855	Thematic component	198	f
+894	W1T3L3Q4	207	f
+857	Integrative component	198	f
+858	Reused component	198	f
+860	Standard component	199	f
+859	Thematic component	199	f
+861	Integrative component	199	t
+862	Reused component	199	f
+863	A software component provides a service integral to the architecture	200	f
+864	A software component can present a stable, well-defined interface to all users	200	f
+865	A software component cannot be decomposed into sub-components	200	t
+867	To set the design foundation for the architecture	201	t
+868	To set the technical direction of the architecture	201	f
+870	All of the above	201	f
+871	Run through ESSBS	202	f
+872	Build and analyze proof of concept software	202	f
+874	Interview stakeholders and users	202	f
+878	Evaluate the issues for addressability without jeopardizing the foundational design	203	f
+976	W2T2L5Q4	228	f
+881	An element that has a text	204	f
+882	An element that inputs data or retrieves data from the system	204	t
+884	Model possible statuses of an object in the system	205	f
+889	System Requirements Specification	206	f
+890	Software Requirements System	206	f
+887	Software Requirements Specification	206	t
+893	Avoid redundancies in the SRS	207	f
+895	Fully refine requirements and review them	208	f
+896	All the options are correct	208	t
+897	Design and review user interface, architecture and algorithm	208	f
+899	Verifiable	209	f
+901	Feasible	209	f
+900	Prioritized	209	f
+902	Fulfilling	209	t
+904	Collaboration diagram	210	f
+903	Statechart diagram	210	f
+906	All options are correct	210	f
+905	Decision tree	210	t
+907	Find incorrect or missing transitions early	211	f
+909	All options are correct	211	t
+911	i only	212	f
+912	i, ii and iii	212	t
+914	iii only	212	f
+913	i and ii only	212	f
+916	Have customers evaluate prototypes	213	f
+915	Hold peer reviews and inspections	213	f
+919	"Instantaneously" is not feasible	214	f
+920	All options are correct	214	t
+921	Ambiguity of "non-printing characters"	214	f
+925	Interface segregation principle	215	f
+924	Modularity	215	t
+927	i only	216	t
+928	i and iii only	216	f
+930	I, ii and iii 	216	f
+929	ii and iii only	216	f
+934	i and iii only	217	f
+931	i only	217	f
+935	Conceptual design can be achieved by the uniform application of a limited number of design forms	218	f
+938	One should depend upon abstractions and not upon concretions	218	f
+932	iii only	217	t
+939	Conceptual design can be achieved by the uniform application of a limited number of design forms	219	f
+942	One should depend upon abstractions and not upon concretions	219	t
+943	A component should not know about the internal details of other components	220	t
+948	Objects in a program should be replacable with instances of their subtypes without altering the correctness of that program	221	f
+949	Software entities like classes, modules and functions should be open for extension but closed for modifications	221	f
+951	Modularity	222	f
+954	Interface segregation principle	222	f
+955	True	223	t
+956	False	223	f
+957	Not enough information to determine	223	f
+958	None of the above	223	f
+961	Not enough information to determine	224	f
+966	None of the above	225	f
+963	True	225	f
+965	Not enough information to determine	225	f
+964	False	225	t
+967	Decompositional design	226	f
+968	Compositional design	226	t
+973	i and ii only	227	f
+969	Design patterns	226	f
+972	iii only	227	f
+971	i only	227	f
+974	i, ii and iii	227	t
+977	W2T2L5Q4	228	f
+869	To set the all encompassing design for the architecture	201	f
+917	All options are correct	213	t
+1067	Testability	251	f
+1068	Integrity	251	t
+1097	Miscalculation of dose amount subscripted by doctors	258	f
+486	Open Close Principle	96	f
+979	By having uniform application of a limited number of design forms	229	t
+980	By only designing what is necessary	229	f
+720	Shutoff any offered service in the design that are detrimental to the rest of the design	164	f
+1010	None of the above	236	t
+1040	Communication protocols	244	f
+1039	Shared variable access	244	f
+873	Imprint brand quality into architecture	202	t
+922	Incomplete without any mention of the triggers for display change	214	f
+1069	Portability	251	f
+1098	Chemical leakage on an exposed wire	258	f
+953	Principle of least knowledge	222	t
+981	By depending upon abstractions	229	f
+721	Reduce integration effort by putting into an architectural style	164	f
+1012	Passive software component	237	f
+1011	Hardware component	237	f
+1041	Transaction streams	244	f
+875	Run through ESSBS	203	f
+1042	All are correct	244	t
+1070	Flexibility	251	f
+1100	Correctness	259	f
+1099	Safety	259	f
+1101	Reliability	259	f
+475	Liskov substitution principle	94	t
+952	Single responsibility principle	222	f
+982	By specifying intent in one place only	229	f
+723	True	165	t
+1013	Active software component	237	f
+877	Evaluate the most suitable styles and their combinatory arrangement	203	f
+1043	Components	245	f
+1044	Data and control communication	245	f
+503	i and ii only	104	f
+1072	Performance	252	t
+1071	Correctness	252	f
+1102	All options are correct	259	t
+960	False	224	t
+731	Shutoff any offered service in the design that are detrimental to the rest of the design	167	t
+983	Square corner rectangles	230	t
+984	Round corner rectangles	230	f
+1014	None of the above	237	t
+876	Incorporate regulatory and industry standard components	203	t
+1015	ii only	238	f
+1016	i and iii only	238	t
+1017	ii and iii only	238	f
+1045	Topology	245	f
+772	A shape with text representing an entity without having likeness	177	f
+506	i, ii and iii	104	t
+1115	Maintainability	110	t
+1116	Portability	110	f
+1118	Integrity	110	f
+1117	Reliability	110	f
+1119	Performance	111	f
+1122	None of the above	111	f
+1121	Reusability	111	t
+1120	Portability	111	f
+1073	Robustness	252	f
+1125	Missing hardware parts	112	f
+1126	Still unknown	112	f
+1124	Major battery fault	112	t
+1123	There was never a recall	112	f
+959	True	224	f
+735	It is a tightly bound abstract program supporting the construction of fully functional software	168	f
+985	Rectangles with corners cut off	230	f
+1128	Constraint\n	72	f
+1129	Solution Idea	72	f
+1130	Business Rule	72	t
+1131	True	85	t
+1132	False	85	f
+1133	Not enough information	85	f
+1134	None of the above	85	f
+1147	Symbol	131	f
+1148	Icon	131	f
+1149	Adornment	131	t
+1150	Annotation	131	f
+1139	Effability	103	t
+1142	All of the above	103	f
+1141	Robustness	103	f
+1140	Flexibility	103	f
+1143	Product revision	107	f
+1146	None of the above	107	f
+1018	i, ii and iii	238	f
+1046	Hidden	245	t
+1144	Product transition	107	t
+1145	Product operations	107	f
+1074	Reliability	252	f
+467	Repeat yourself, maximise upfront design, open close principle	92	f
+1135	Modularity, open close principle, multiple responsibility principle	99	t
+1137	Interface segregation principle, open close principle, conceptual integrity	99	f
+1138	All of the above	99	f
+1136	Single responsibility principle, minimize upfront design, conceptual integrity	99	f
+962	None of the above	224	f
+1151	Modify-View-Connect	149	f
+1153	Modify-Verify-Connect	149	f
+1154	Model-Verify-Controller	149	f
+1152	Model-View-Controller	149	t
+737	It provides a wide range of computer standard services such as GUI, web connection and navigation	168	f
+986	None of the above	230	f
+773	Shape or textual addition to a target symbol giving explanations or semantic detail to a target symbol	177	t
+1127	Functional Requirement	72	f
+684	Complete	155	f
+1048	Product transition	246	f
+1047	Product revision	246	f
+1075	Performance	253	f
+1076	Portability	253	t
+468	Maximize upfront design, principle of least knowledge, modularity	92	f
+970	Evolutionary design	226	f
+736	It provides a wide range of computer standard services such as database connection and common object creation	168	f
+988	Round corner rectangles	231	f
+987	Square corner rectangles	231	f
+1019	Readers	239	f
+1020	Databases	239	t
+774	A picture-like shape that represents an entity by having the likeness	177	f
+683	Clean	155	t
+1049	Product operations	246	t
+1077	Reusability	253	f
+469	Interface integration principle, open close principle, multiple responsibility principle	92	f
+975	Dividing large aggregates of components into units for low coupling and high cohesion	228	f
+1021	Variables	239	f
+740	Constructing the database table maintenance screens for any application	169	f
+989	Rectangles with corners cut off	231	t
+778	A forwarder of service requests inside a component	178	f
+685	Consistent	155	f
+686	Unambiguous	155	f
+1050	All of the above	246	f
+1078	None of the above	253	f
+926	All options are correct	215	f
+603	Component-Based Software Engineering	134	t
+739	Displaying logon screen, menu bar, navigation bar, pagination and scrolling	169	f
+990	None of the above	231	f
+1022	Modules	239	f
+777	An interface between components	178	f
+879	A data flow	204	f
+880	An element that can be expanded outside of the system	204	f
+1052	Product transition	247	t
+1051	Product revision	247	f
+1053	Product operations	247	f
+1079	Performance	254	f
+1080	Portability	254	t
+923	Liskov substitution principle	215	f
+605	Crowdsourced Books on Software Engineering	134	f
+746	Framework: Loosely coupled; Repository: Tightly coupled	170	f
+992	Solid-line arrows	232	t
+991	Rectangles with corners cut off	232	f
+993	Dotted-line arrows	232	f
+1024	Readers	240	t
+1023	Constants	240	f
+776	A picture-like shape that represents an entity by having the likeness	178	f
+883	Models the discrete state a system can be in	205	f
+1054	None of the above	247	f
+1081	Reusability	254	f
+1025	Objects	240	f
+809	Used to build detail about the internals of select components	186	f
+933	i and ii only	217	f
+656	Assimilate Object Programming	147	f
+745	Framework: Inversion of control; Repository: No inversion of control	170	t
+994	None of the above	232	f
+886	All the options are correct	205	t
+1055	Product revision	248	f
+1056	Product transition	248	t
+1082	None of the above	254	f
+937	Each component should be responsible for only a specific functionality	218	f
+657	Account-Object Programming	147	f
+749	Authentication and authorization	171	f
+995	Rectangles with corners cut off	233	f
+996	Solid-line arrows	233	f
+997	Dotted-line arrows	233	t
+1026	Abstract data types	240	f
+885	Provides a concise, complete and unambiguous representation of a finite-state machine	205	f
+1057	Product operations	248	f
+1084	Portability	255	f
+1083	Performance	255	f
+936	Objects in a program should be replacable with instances of their subtypes without altering the correctness of that program	218	t
+658	Aspect-Oriented Programming	147	t
+998	None of the above	233	f
+1027	ii only	241	f
+1028	i and iii only	241	f
+1029	ii and iii only	241	t
+888	Specified Requirements of System	206	f
+1058	None of the above	248	f
+1085	Reusability	255	f
+940	Objects in a program should be replacable with instances of their subtypes without altering the correctness of that program	219	f
+698	inversion of control	158	f
+1001	Active software component	234	t
+1000	Passive software component	234	f
+999	Hardware component	234	f
+1030	i, ii and iii	241	f
+1032	True. An object.	242	t
+892	Make sentences as long as possible	207	t
+1060	Mobility	249	t
+1059	Testability	249	f
+1086	None of the above	255	t
+941	Each component should be responsible for only a specific functionality	219	f
+702	All options are correct	159	t
+1002	None of the above	234	f
+1031	True. A procedure call that contains parameters.	242	f
+1033	False.	242	f
+891	Document expected behaviours and exception conditions	207	f
+1061	Maintainability	249	f
+1088	Miscalculation of dose amount subscripted by doctors	256	f
+1087	Corruption of development fund by the upper managements	256	f
+945	Software entities like classes, modules and functions should be open for extension but closed for modifications	220	f
+703	It is a basic structure either an outline or skeleton with which a complete structure is built	160	f
+1004	Passive software component	235	f
+1003	Hardware component	235	t
+898	Program documentation	208	f
+1062	Flexibility	249	f
+1089	Chemical leakage on an exposed wire	256	f
+1090	Still unknown	256	t
+944	Objects in a program should be replacable with instances of their subtypes without altering the correctness of that program	220	f
+706	It is a guide for building the complete structure	160	f
+1005	Active software component	235	f
+1034	Not enough information to determine.	242	f
+908	Define user back-out and cancellation routes	211	f
+1063	Correctness	250	f
+1064	Usability	250	f
+1092	Correctness	257	f
+1091	Safety	257	f
+1093	Reliability	257	f
+946	One should depend upon abstractions and not upon concretions	220	f
+705	It can be both a design and an implementation	160	f
+1006	None of the above	235	f
+1036	True. An object.	243	f
+1035	True. A procedure call that contains parameters.	243	t
+910	Spot reuse opportunities or redundancies in UI design	211	f
+1065	Reliability	250	f
+1094	All options are correct	257	t
+947	The design should be composed of replaceable, self-contained assemblies of elementary parts, thereby aiding both the initial development and the later maintenance	221	t
+708	A collection of classes that provide extended functionality for a wide variety of standard computer functions	161	f
+1007	Hardware component	236	f
+1008	Passive software component	236	f
+1037	False.	243	f
+918	Write customer acceptance critera	213	f
+1066	Flexibility	250	t
+1095	Still unknown	258	f
+1096	Design error in the control software	258	t
+950	One should depend upon abstractions and not upon concretions	221	f
+709	An application that helps developers to order coffee	161	f
+1009	Active software component	236	f
+1038	Not enough information to determine.	243	f
+978	All of the above	228	t
+\.
+
+
+--
+-- TOC entry 3071 (class 0 OID 16738)
+-- Dependencies: 218
+-- Data for Name: dungeon; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+COPY public.dungeon (player_name, question_1, question_2, question_3, question_4, question_5, lock) FROM stdin;
+Damien	39	35	42	46	47	t
+Ferlita	\N	\N	\N	\N	\N	t
+Boon Juey	\N	\N	\N	\N	\N	t
+Irvin	\N	\N	\N	\N	\N	t
+Cheng Yun	\N	\N	\N	\N	\N	t
+Zhi Ying	\N	\N	\N	\N	\N	t
+Irfan	\N	\N	\N	\N	\N	f
+Vivin	35	77	217	148	130	t
+Desmond	\N	\N	\N	\N	\N	t
+\.
+
+
+--
+-- TOC entry 3070 (class 0 OID 16672)
+-- Dependencies: 217
+-- Data for Name: instructor; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+COPY public.instructor (instructor_id, instructor_name, password, question_1, question_2, question_3, question_4, question_5, lock) FROM stdin;
+1	Instructor	$2a$10$DaY0.8Fvfb68eiBJFdN/7u9PhNy93mbC2hz58Sg6sPzioM6UX5fRa	31	36	40	46	32	f
+\.
+
+
+--
+-- TOC entry 3060 (class 0 OID 16562)
+-- Dependencies: 207
+-- Data for Name: level; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+COPY public.level (level_id, level_name, tower_id) FROM stdin;
+1	Level 1	1
+2	Level 2	1
+3	Level 3	1
+4	Level 4	1
+5	Level 5	1
+6	Level 1	2
+7	Level 2	2
+8	Level 3	2
+9	Level 4	2
+10	Level 5	2
+11	Level 1	3
+12	Level 2	3
+13	Level 3	3
+14	Level 4	3
+15	Level 5	3
+16	Level 1	4
+17	Level 2	4
+18	Level 3	4
+19	Level 4	4
+20	Level 5	4
+21	Level 1	5
+22	Level 2	5
+23	Level 3	5
+24	Level 4	5
+25	Level 5	5
+26	Level 1	6
+27	Level 2	6
+28	Level 3	6
+29	Level 4	6
+30	Level 5	6
+31	Level 1	7
+32	Level 2	7
+33	Level 3	7
+34	Level 4	7
+35	Level 5	7
+36	Level 1	8
+37	Level 2	8
+38	Level 3	8
+39	Level 4	8
+40	Level 5	8
+41	Level 1	9
+42	Level 2	9
+43	Level 3	9
+44	Level 4	9
+45	Level 5	9
+\.
+
+
+--
+-- TOC entry 3062 (class 0 OID 16588)
+-- Dependencies: 209
+-- Data for Name: player; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+COPY public.player (player_id, player_name, "character", password) FROM stdin;
+12	Vivin	mage	$2a$10$1ZvDpeHnGM8ApgdQ7.nZ3eQ8SKPXlhkBLz4fXrWYSthLK9r7DSwjG
+6	Ferlita	\N	$2a$10$1IDuEVos7zcUhycAGH7NLexze9bkSxTGHemeewA58c4OP4bpNIeCK
+7	Boon Juey	\N	$2a$10$NwuADYfxfm6QFuSTsj46kOH8JaBFbO0e8OD3FiLV1ncz9QJhyQeC.
+10	Irfan	\N	$2a$10$YgZZVPcYjS4F1BDzCdPxD.4Ps759FURb/TlpXE4qaTibXqQfiTOG6
+11	Zhi Ying	\N	$2a$10$X.4kstzlGbuRTj1ceDy7e.IKHm1joX7IgQHcUPt3Th2sc3xZsx8TG
+9	Cheng Yun	mage	$2a$10$9dZq4AeSrN76mam52gF7B.zHMz.uCU79lbm8n1hFBUkBud2CYtJv2
+5	Damien	ninja	$2a$10$vBzATymIK8HUKNlyOPVLHuXiLfOvd5tyinQWAU1CuZk883LMOPtp2
+2	Desmond	ninja	$2a$10$3E2.sdZoLydje1XUKtDrCO5gqnC1MckCiQC3TBKaTN36IuQVTD4lu
+8	Irvin	knight	$2a$10$7pDXmji6Nt0ZRZDQhWo42.ZkFU3Lo9X1izK.riUUiEZ5AD3sPknnW
+\.
+
+
+--
+-- TOC entry 3072 (class 0 OID 16793)
+-- Dependencies: 219
+-- Data for Name: progress; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+COPY public.progress (player_id, tower_id, level_id) FROM stdin;
+5	2	8
+2	1	5
+2	2	9
+9	4	17
+12	5	25
+9	1	4
+12	8	36
+9	3	13
+12	7	35
+9	7	31
+12	2	7
+8	2	6
+8	1	4
+12	1	4
+12	4	17
+5	2	8
+2	1	5
+2	2	9
+9	4	17
+12	5	25
+9	1	4
+12	8	36
+9	3	13
+9	2	7
+12	7	35
+9	7	31
+9	5	22
+9	6	26
+12	2	7
+9	8	36
+8	2	6
+8	8	37
+8	9	41
+8	7	31
+5	1	5
+8	1	4
+12	1	4
+12	4	17
+9	2	7
+9	5	22
+9	6	26
+9	8	36
+8	8	37
+8	9	41
+8	7	31
+5	1	5
+\.
+
+
+--
+-- TOC entry 3064 (class 0 OID 16606)
+-- Dependencies: 211
+-- Data for Name: question; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+COPY public.question (question_id, question_body, level_id) FROM stdin;
+30	What is the course name?	1
+31	What is the course code?	1
+32	How many AUs does the module hold?	1
+33	Who are the course coordinators?	1
+34	What was the pre-requisite to SSAD? Can it be taken concurrently?	1
+35	What is the assessment scheme for CZ3003?	2
+36	What is the Lab Project about?	2
+37	How many Lab sessions are there?	2
+38	What is the focus for Lab #1?	2
+39	When should you start working on your SRS?	2
+40	What is the focus for Lab #4?	3
+41	Which design is the most important for this lab project?	3
+42	Are you allowed to use open source game engines?	3
+43	Which of the following is a problem of traditional classroom teaching and learning?	3
+44	Which of the following is NOT an intended benefit of the game project?	3
+45	When is the Final Exam date for AY20/21 Semester 2?	4
+46	How would the Final Exam be?	4
+47	Which is the focus of Tutorial 1 (the first tutorial)?	4
+48	Which is the focus of Tutorial 10 (the last tutorial)?	4
+49	Which of the following will NOT be covered in any tutorial?	4
+50	There are __ levels of Software Requirements.	5
+51	Which of the following is NOT a non-functional requirement?	5
+52	Which of the folllowing is NOT a reason for the importance of software analysis and design?	5
+53	Which of the folllowing is the reason for the importance of software analysis and design?	5
+54	Which of the following is NOT a major cause of difficulty in Software Engineering?	5
+55	Which of the following is correct regarding requirement engineering?	6
+56	Which of the following is requirement elicitation NOT concerned with?	6
+57	Which of the following is a requirement elicitation technique?	6
+58	Which of the following is NOT relevant to the requirement elicitation techinique "examine documents"?	6
+59	Which of the following is NOT a requirement elicitation technique?\n	6
+60	Who is NOT a software stakeholder?	7
+61	Which of the following is NOT a business requirement?	7
+62	Which of the following is an example of a data definition?	7
+63	Classify this statement correctly: "Each case status record will indicate the status code, date of status change and user ID of the updater."	7
+64	Classify this statement correctly. "The user must be able to print a boarding pass for a flight."	7
+65	Which of the following is NOT a requirement elicitation technique?	8
+66	Which of the following is relevant to the requirement elicitation techinique "prototyping"?	8
+67	Classify this statement correctly: "All HTML code must conform to the HTML 5.0 standard."	8
+68	Classify this statement correctly: "A trained clerk shall be able to check in a guest in 2 minutes or less."	8
+69	Which of the following is an example of a business rule?	8
+70	Which of the following is NOT relevant to the requirement elicitation techinique "interview stakeholders"?	9
+71	Which of the following is relevant to the requirement elicitation techinique "task analysis"?	9
+91	Which of the following is NOT a good software design principle?	16
+72	''Classify this statement correctly: "A person younger than 16 may be issued a driver's license only if he or she has passed an approved driver training class."	9
+76	Classify this statement correctly: "The system shall notify the Idea Coordinator whenever someone submits a new idea."	10
+77	Classify this statement correctly: "The system should reduce cafetaria operating costs by 15% within 12 months following initial release."	10
+78	What is the correct order in decomposing high-level requirements? (A)  Use Case Diagram, (B) Vision and Scope Document, (C) Softwarre Requirements Specification	11
+79	Why is Requirement modelling useful?	11
+80	Which of the following is NOT considered a structured analysis model?	11
+81	"Data Flow Diagram permits top-down hierarchical decomposition of a system." Is this true?	11
+82	Each use case must have a use case description that contains which of the following?	11
+83	Which of the following is an object-oriented analysis model?	12
+84	"Data Flow Diagram is suitable for analysing process-focused applications." Is this true?	12
+85	"Entity-Relationship Diagrams depict logical relationships among system's data elements." Is this true?	13
+86	Which of the following is a valid cardinality for Entity-Relationship Diagrams?	13
+87	For CRUDL Matrix, what do each letter stand for?	14
+88	Which of the following is NOT a correct requirement specification approach?	15
+89	If you are tasked to develop a requirement management tool, what are the functions or features you would include?	15
+90	Who is/are NOT the intended audiences of a Software Requirements Specification (SRS)?	15
+95	Which of the following correctly describes the "open close principle"?	18
+102	Which of the following is an important software quality attribute?	21
+92	Which of the options contains three good software design principles?	16
+93	Which of the following is a good software design principle?	16
+99	Which of the options do NOT consist of three good software design principles?	16
+94	Which of the following design principles are OO-Designs?	17
+101	(i) Conceptual integrity (ii) Maximize upfront design (iii) Liskov integration principle. Which of the three is/are NOT OO-design principles?	17
+96	"The design should be composed of replaceable, self-contained assemblies of elementary parts, thereby aiding both the initial development and the later maintenance."  Which software design principle describes this?	19
+97	Which of the following design strategies is NOT correct?	20
+100	(i) Do not repeat yourself (ii) Modularity (iii) Maximise upfront design. Which of the three is/are good design principles?	16
+113	Which of the following is "a unit of software that performs some functions at run-time"?	26
+117	Which of the following statements about Software Architecture is NOT correct?	26
+119	What does the visual notation of a "round corner rectangle" represent?	28
+122	There are ___ phases in the Software Architecting Canonical Process (SACP) before launching activity.	31
+131	Which of the following refers to the "semantic-less decoration of a target symbol used to enhance recognition of that symbol's semantics"?	36
+132	Which of the following is NOT correct regarding Façade design pattern?	36
+133	Which of the following is correct definition of auxiliary notes?	37
+136	"For CBSE repository, the whole framework is typically reused". Is this statement true?	43
+139	Which of the following is a correct type of message in UML Communication diagrams?	38
+140	The theoretical basis for UML interaction is the SMCR model by David Berlo in 1960. What does SMCR stand for?	39
+141	Which of the following sample roles that components could have in a typical computerized product is NOT correct?	40
+142	Which of the following is the correct description of a software port?	36
+144	What can be used to estimate the minimum number of classes required for a given architecture diagram?	36
+145	"___" is an interface between components, qualifying them as provider or requester of services. What goes in the blank?	36
+146	In the Spring software framework, what does DAO stand for?	41
+148	The four steps to reusing software components are I-Q-I-M. What does each letter stand for?	41
+150	Which of the following is an example of a quality attribute?	9
+151	Which of the following "describes a policy, standard or regulation"?	9
+152	Which of the following is an example of a solution idea?	10
+153	Which of the following is relevant to the requirement elicitation techinique "questionnaires and surveys"?	10
+154	Which of the following is an essential analyst skill?	10
+174	Which of the following is a correct type of message in UML Communication diagrams?	37
+175	What does an asynchronous message mean?	37
+179	Which of the following is correct definition of assembly connector?	38
+182	Which of the following is a form of UML component diagram?	39
+128	What are the two fundamental categories of software?\n	33
+189	Which of the following options matches the description of "a high-level design specification of the consitency, configuration and arrangement of a manmade assemblage that addresses some enterprise need"?	32
+106	(i) Sourceability (ii) Sellability (iii) Security . Which of the three is/are NOT correct software quality attribute?\n	21
+107	The software quality attribute "interoperability" falls under which of the following?	22
+108	The software quality attribute "correctness" falls under which of the following?	22
+109	Which of the following is NOT part of Product transition?	23
+110	Which of the following is part of Product revision?	23
+111	Which of the following matches the description of "algorithms and data structures design determine how easily the components can be parameterised and the way to configure the components"?	24
+112	What was the cause of the Samsung galaxy note 7 recall?	25
+134	CBSE repository is an effective and trustworthy source of reusable software components. What does CBSE stand for?	41
+147	In the Spring software framework, what does AOP stand for?	41
+149	In the Spring software framework, what does MVC stand for?	41
+135	"___" is a collection of individual classes compatible with a particular programming language that each provide reliable implementations for a wide variety of standard computer functions.	42
+156	Besides CBSE repository, what is another trustworty source of reusable software components?	42
+158	Unlike Framework, a repository is/has…	42
+160	Which of the following statements regarding frameworks is NOT correct?	43
+161	What is a "Toolkit"?	43
+137	Which of the following is NOT a reason why inversion of control is important?	44
+164	Which of the following matches the description fo the "qualify" step in reusing software components?	44
+167	Which of the following matches the description fo the "Isolate" step in reusing software components?	44
+168	Which of the following statements regarding Software Framework is NOT correct?	45
+169	Which of the following is a common default behavior of a software framework?	45
+118	What is the visual notation of an passive software component?	27
+115	A component has a data feature if it …	26
+116	A component has a control feature if it …	26
+114	What are the two aspects of software components?	26
+120	Which of the following is NOT an example of a passive data component?	29
+121	(i) Executable (ii) Stores data at its internal state (iii) Data is passed. Which of the following is/are relevant to data components?	30
+123	What does ECB pattern stand for?	31
+125	(i) Sientific (ii) Aesthetic (iii) Philosophic. Which of the following aspects can a design assemblage address?	31
+126	What does the ESSBS stand for?	31
+127	What are the three phases of the SACP?	32
+188	Which of the following matches the description of a "one-to-one software interface to a hardware device installed directly into the device"?	32
+129	Which of the following is NOT correct regarding architecture?	34
+130	Which of the following option is NOT a correct statement regarding device drivers?	35
+172	Which of the following sample roles that components could have in a typical computerized product is NOT correct?	37
+185	In UML behavior diagram, what is the "role inherent to a class participating in the interaction"?	40
+186	Which of the following is NOT relevant to decomposition form?	40
+155	Which of the following is NOT a characteristic of quality requirement specification?	12
+204	In a context diagram, what is an external entity?	12
+205	Which of the following is correct regarding a state-transition diagram?	12
+206	What does SRS stand for?	13
+252	Which software quality attribute measures the responsiveness of a system?	24
+253	Which of the following matches the description of "the easiness a software system can be transported from one platform to another"?	24
+254	Which of the following matches the design description of "algorithm and data structure shuold not depend heavily on the platform specific feature"?	24
+255	Which of the following is concerned with "protection against unauthorized access"?	24
+256	What was the cause of the proton therapy machine crashes?	25
+257	(i) Safety (ii) Correctness (iii) Reliability. Which quality attributes was/were violated during the proton therapy machine crashes incident?	25
+208	When estimating feature costs, what should you do?	13
+258	What was the cause of the therac-25 radiation overdosing?	25
+259	What quality attribute is violated during the therac-25 radiation overdosing incident?	25
+215	Which of the following design principles are NOT OO-Designs?	17
+216	(i) Dependency inversion principle (ii) Interface substitution principle (iii) Liskov integration principle. Which of the three is/are OO-design principles?	17
+219	Which of the following correctly describes "dependency inversion principle"?	18
+207	Which of the following is NOT correct when writing quality requirements?	13
+209	Which of the following is NOT a characteristic of quality requirement specification?	14
+210	Which of the following is NOT an example of object-oriented analysis models?	14
+211	Which of the following is a benefit of a dialog map?	14
+212	(i) "Minimize" (ii) "Reasonable" (iii) "User-friendly". Which word/s should you avoid when writing quality requirements?	14
+213	Which of the following is NOT a correct requirements validation technique?	15
+214	"The XML editor shall switch between displaying and hiding non-printing characters instantaneously." What is the problem with this requirement?	15
+103	Which of the following is NOT an important software quality attribute?	21
+104	(i) Maintainability (ii) Availability (iii) Interoperability. Which of the three is/are correct software quality attribute?	21
+105	(i) Maintainability (ii) Mobility (iii) Mailability. Which of the three is/are correct software quality attribute?	21
+246	The software quality attribute "integrity" falls under which of the following?	22
+247	The software quality attribute "portability" falls under which of the following?	22
+248	The software quality attribute "flexibility" falls under which of the following?	22
+249	Which of the following is NOT part of product revision?	23
+250	Which of the following is NOT part of product operations?	23
+251	Which of the following is a part of product operations?	23
+220	Which of the following correctly describes the "single responsibility principle"?	18
+217	(i) Liskov integration principle (ii) Maxiimize upfront design (iii) Dependency inversion principle. Which of the three is/are OO-design principles?	17
+218	Which of the following correctly describes "Liskov substitution principle"?	18
+221	Which of the following correctly describes "modularity"?	18
+222	"A component should not know about internal details of other components."  Which software design principle describes this?	19
+223	"Principle of least knowledge states that a component should not know about internal details of other components." Is this true?	19
+224	"One general-purpose interface is better than many client-specific interfaces." Is this true?	19
+225	"Interface segregation principle states that one should depend upon abstractions and not upon concretions." Is this true?	19
+226	Which of the following design strategies is "bottom-up"?	20
+227	(i) Iterative (ii) Model-based (iii) Multiple solution. Which of the three is/are correct design process?	20
+228	Which of the following is relevant to software design principle "modularity"?	20
+229	How do you achieve conceptual integrity?	20
+157	Which of the following is a special characteristic of systems?	42
+159	What are some examples of common behavioral and graphical elements?	42
+162	Which of the following techniques are used in the process of reusing components?	43
+163	(i) Standard (ii) Integrative (iii) Thematic components. Which of these three are suitable for reuse?	43
+165	"Inversion of control describes a design where the reusable software dictates the overall flow of control and not the custom-written postions." Is this true?	44
+230	What is the visual notation of a hardware component?	27
+231	What is the visual notation of an active software component?	27
+233	What is the visual notation of a data flow connector?	27
+236	What does the visual notation of a "triangle with cut off corners" represent?	28
+239	Which of the following is an example of an active data component?	29
+240	Which of the following is an example of an active process?	29
+243	"A connection may have both data and control features." Is this true? Give one example.	30
+245	Which of the following is NOT relevant to software architecture being about structure?	30
+193	Which of the following is an example of an integrative component?	33
+195	Who are the two groups of immediate stakeholders?	33
+197	What does it mean to be an essential element, crucial for the success of a new software?	34
+199	Which of the following software components connect other components together while hiding design changes?	34
+201	What is the focus of the first phase of the SACP?	35
+203	Which of the following is to be done during the second phase of the SACP?	35
+166	"For backward compatibility, every connection by the actuator would be a direct call, delegating the legacy function to the new software Client." Is this statement true?	44
+138	Which of the following statements is NOT correct regarding the Spring software framework?	45
+170	Which of the following comparisons between Framework and Repository is correct?	45
+171	Spring framework includes several modules that provide a range of services. Which of the following is NOT correct?	45
+232	What is the visual notation of a control flow connector?	27
+234	What does the visual notation of a "rectangle with corners cut off" represent?	28
+235	What does the visual notation of a "square corner rectangle" represent?	28
+237	What does the visual notation of a "round corner hexagon" represent?	28
+238	(i) Flash player (ii) Databases (iii) Readers. Which of the three is/are active processes?	29
+241	(i) Modules (ii) Process with data (iii) Databases. Which of the three is/are active data components?	29
+242	"A component may have both data and control features." Is this true? Give one example of such a component.	30
+244	Which of the following is an example of the use of connectors?	30
+124	(i) Abstract (ii) Creative (iii) Multi-dimensional. Which of the following modes of thinking does a designer need to apply?	31
+190	Which of the following matches the description of a "form of control effected when certain actions are triggered"?	32
+191	Which of the following is NOT a common specialized software component?	32
+192	Which of the following interacts with external classes and internal control classes?	33
+194	Which of the following design strategies can be described as "software is augmented with coherent components proven to be high quality by virtue of their service elsewhere"?	33
+196	Which of the following is a correct definition of the top-down design strategy?	34
+198	Which of the following software components provide a service that is seen in many other software of its kind and often left out by customers?	34
+200	Which of the following is NOT a correct statement regarding information hiding?	35
+202	Which of the following is NOT part of the first phase of the SACP?\n	35
+173	The theoretical basis for UML interaction is the SMCR model by David Berlo in 1960. What does SMCR stand for?\n	37
+176	How are synchronous messages represented?\n	38
+177	Which of the following is correct definition of "annotation" when drawing a diagram?	38
+180	Which of the following is correct definition of a hardware port?	39
+181	What is represented in the UML component diagram with the notation of a box substantially smaller than the component box and with name in proximity?	39
+183	Which of the following form matches the description of "breadthwise expansion as new components are appended to an existing aggregate"?	39
+184	Which of the following form matches the description of "depthwise drill-down as components are broken down into sub-components"?	40
+187	What is the most important aspect of an UML Behavior diagram?	40
+178	Which of the following is correct definition of a hardware port?	38
+\.
+
+
+--
+-- TOC entry 3068 (class 0 OID 16632)
+-- Dependencies: 215
+-- Data for Name: response; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+COPY public.response (response_id, player_id, answer_id) FROM stdin;
+765	12	500
+769	12	505
+776	12	1139
+778	12	1144
+779	12	1050
+780	12	1047
+781	12	1048
+782	12	1049
+786	12	522
+787	12	519
+788	12	520
+798	12	522
+799	12	520
+800	12	1067
+801	12	1070
+803	12	1068
+804	12	1115
+805	12	1060
+806	12	1066
+807	12	1073
+808	12	1072
+809	12	1120
+810	12	1121
+812	12	1076
+813	12	1081
+814	12	1080
+815	12	1086
+829	12	574
+830	12	577
+836	12	597
+837	12	635
+838	12	636
+839	12	643
+842	12	648
+849	12	818
+850	12	827
+853	12	834
+854	12	835
+860	12	849
+861	12	854
+862	12	855
+863	12	861
+864	12	592
+865	12	866
+866	12	869
+867	12	871
+868	12	878
+869	12	592
+870	12	866
+876	12	878
+904	12	354
+905	12	352
+906	12	357
+907	12	281
+908	12	282
+909	12	285
+910	12	288
+911	12	293
+912	12	297
+913	12	295
+914	12	296
+915	12	299
+916	12	303
+917	12	304
+918	12	308
+919	12	307
+920	12	314
+921	12	313
+922	12	282
+923	12	285
+924	12	287
+925	12	290
+926	12	288
+927	12	293
+928	12	296
+929	12	302
+930	12	299
+931	12	304
+932	12	307
+933	12	313
+934	12	314
+935	12	312
+936	12	318
+937	12	321
+938	12	319
+939	12	320
+940	12	326
+941	12	323
+942	12	330
+943	12	463
+944	12	464
+945	12	470
+946	12	471
+947	12	472
+948	12	473
+949	12	463
+950	12	465
+951	12	464
+952	12	470
+953	12	474
+954	12	494
+955	12	492
+956	12	1136
+957	12	464
+958	12	474
+959	12	470
+960	12	492
+961	12	1135
+962	12	414
+963	12	932
+964	12	662
+965	12	659
+966	12	262
+967	12	592
+1009	5	260
+1011	5	262
+1013	5	263
+1014	5	270
+1015	5	271
+1016	5	275
+1018	5	282
+1019	5	285
+1020	5	288
+1021	5	293
+1022	5	295
+1023	5	296
+1024	5	299
+1025	5	303
+1026	5	304
+1027	5	307
+1028	5	314
+1029	5	313
+1030	5	312
+1031	5	318
+1032	5	320
+1033	5	323
+1034	5	327
+1035	5	329
+1036	5	334
+1037	5	332
+1038	5	337
+1039	5	336
+766	12	502
+767	12	504
+768	12	503
+770	12	502
+771	12	504
+772	12	506
+773	12	507
+777	12	517
+783	12	1052
+784	12	1056
+785	12	521
+789	12	1070
+790	12	516
+791	12	517
+792	12	1146
+794	12	1144
+795	12	1049
+796	12	1052
+797	12	1056
+816	12	304
+817	12	320
+818	12	262
+819	12	281
+821	12	282
+822	12	256
+823	12	560
+824	12	563
+825	12	570
+826	12	567
+827	12	569
+828	12	568
+831	12	560
+832	12	563
+833	12	568
+834	12	574
+835	12	576
+840	12	647
+841	12	650
+843	12	582
+844	12	581
+845	12	580
+846	12	826
+847	12	821
+851	12	583
+856	12	841
+857	12	843
+858	12	587
+859	12	589
+872	12	869
+873	12	871
+877	12	240
+878	12	245
+879	12	243
+880	12	247
+881	12	250
+644	9	240
+645	9	243
+646	9	250
+647	9	251
+648	9	256
+649	9	259
+650	9	262
+651	9	263
+652	9	270
+653	9	271
+654	9	275
+655	9	281
+656	9	282
+657	9	285
+658	9	289
+659	9	290
+660	9	288
+661	9	293
+662	9	296
+663	9	301
+664	9	300
+665	9	302
+666	9	299
+667	9	304
+668	9	307
+669	9	314
+670	9	282
+671	9	285
+672	9	288
+673	9	293
+674	9	296
+675	9	466
+676	9	464
+677	9	470
+678	9	469
+679	9	474
+680	9	494
+681	9	491
+682	9	562
+683	9	560
+684	9	563
+685	9	570
+686	9	568
+687	9	574
+688	9	578
+689	9	576
+690	9	341
+691	9	345
+692	9	344
+693	9	350
+694	9	354
+695	9	353
+696	9	352
+697	9	357
+698	9	502
+699	9	504
+700	9	510
+701	9	513
+702	9	524
+703	9	526
+704	9	525
+705	9	523
+706	9	527
+707	9	534
+708	9	537
+709	9	299
+710	9	304
+711	9	307
+712	9	314
+713	9	312
+714	9	315
+715	9	318
+716	9	321
+717	9	320
+718	9	326
+719	9	325
+720	9	323
+721	9	327
+722	9	596
+723	9	595
+724	9	598
+725	9	597
+726	9	638
+882	12	251
+883	12	256
+884	12	262
+885	12	263
+886	12	270
+887	12	271
+888	12	275
+889	12	281
+890	12	282
+891	12	285
+892	12	289
+893	12	288
+894	12	292
+895	12	261
+741	8	597
+742	8	637
+743	8	638
+744	8	636
+745	8	643
+746	8	647
+747	8	649
+748	8	598
+749	8	595
+750	8	597
+751	8	636
+752	8	645
+753	8	643
+754	8	649
+755	8	604
+756	8	603
+757	8	652
+758	8	654
+759	8	651
+760	8	562
+761	8	560
+762	8	566
+763	8	565
+764	8	564
+896	12	262
+897	12	263
+898	12	270
+899	12	271
+900	12	275
+901	12	341
+902	12	344
+903	12	350
+1040	5	299
+1041	5	303
+1042	5	304
+1043	5	307
+1044	5	314
+1045	5	313
+1046	5	312
+1047	5	318
+1048	5	319
+1049	5	322
+1050	5	320
+1051	5	326
+1052	5	325
+1053	5	300
+1054	5	301
+1055	5	302
+1056	5	299
+1057	5	304
+1058	5	307
+1059	5	314
+1060	5	282
+1061	5	285
+1062	5	288
+1063	5	293
+1064	5	295
+1065	5	296
+1066	5	341
+1067	5	344
+1068	5	350
+1069	5	351
+1070	5	353
+1071	5	352
+1072	5	357
+1073	5	299
+1074	5	304
+1075	5	308
+1076	5	307
+1077	5	312
+1078	5	318
+1079	5	320
+1080	5	324
+1081	5	323
+1082	5	327
+1083	5	328
+1084	5	330
+1085	5	299
+1086	5	304
+1087	5	307
+1088	5	312
+1089	5	318
+1090	5	320
+1091	5	326
+1092	5	325
+1093	5	323
+1094	5	329
+1095	5	334
+1096	5	333
+1097	5	299
+1098	5	304
+1099	5	307
+1100	5	314
+1101	5	313
+1102	5	312
+1103	5	318
+1104	5	320
+1105	5	325
+1106	5	324
+1107	5	323
+1108	5	329
+1109	5	332
+1110	5	338
+1111	5	360
+1112	5	361
+1113	5	364
+1114	5	365
+1115	5	367
+1116	5	372
+1117	5	375
+1156	5	382
+1157	5	386
+1158	5	384
+1159	5	385
+1160	5	383
+1161	5	390
+1162	5	392
+1163	5	361
+1164	5	365
+1165	5	367
+1166	5	371
+1167	5	372
+1168	5	375
+1169	5	382
+1170	5	384
+1171	5	386
+1172	5	383
+1173	5	390
+1174	5	393
+1175	5	397
+1176	5	398
+1177	5	361
+1178	5	365
+1179	5	367
+1180	5	374
+1181	5	372
+1182	5	375
+1183	5	379
+1184	5	382
+1185	5	384
+1186	5	385
+1187	5	383
+1188	5	390
+1189	5	393
+1190	5	395
+1191	5	401
+1192	5	406
+1193	5	405
+1194	5	404
+1195	5	403
+1196	5	666
+1197	5	667
+1198	5	382
+1199	5	383
+1200	5	390
+1201	5	393
+1202	5	395
+1203	5	400
+1204	5	402
+1205	5	401
+1206	5	404
+1207	5	405
+1256	2	240
+1257	2	243
+1258	2	250
+1259	2	251
+1260	2	255
+1261	2	257
+1262	2	256
+1263	2	259
+1264	2	262
+1265	2	263
+1266	2	270
+1267	2	271
+1268	2	275
+1269	2	282
+1270	2	285
+1271	2	287
+1272	2	292
+1273	2	293
+1274	2	296
+1275	2	302
+1276	2	300
+1277	2	299
+1278	2	304
+1279	2	307
+1280	2	314
+1281	2	312
+1282	2	318
+1283	2	320
+1284	2	323
+1285	2	329
+1286	2	332
+1287	2	337
+1288	2	338
+1289	2	341
+1290	2	344
+1291	2	350
+1292	2	354
+1293	2	353
+1294	2	351
+1295	2	352
+1296	2	357
+1297	2	361
+1298	2	365
+1299	2	370
+1300	2	368
+1301	2	367
+1302	2	373
+1303	2	372
+1304	2	377
+1305	2	342
+1306	2	339
+1307	2	340
+1308	2	341
+1309	2	346
+1310	2	341
+1311	2	344
+1312	2	350
+1313	2	353
+1314	2	352
+1315	2	357
+1316	2	361
+1317	2	365
+1318	2	367
+1319	2	372
+1320	2	375
+1321	2	382
+1322	2	386
+1323	2	383
+1324	2	390
+1325	2	393
+1326	2	398
+1327	2	395
+1328	9	466
+1329	9	464
+1330	9	473
+1331	9	474
+1332	9	470
+1333	9	494
+1334	9	492
+1335	9	1135
+1336	9	299
+1337	9	304
+1338	9	307
+1339	9	313
+1340	9	314
+1341	9	312
+1342	9	318
+1343	9	320
+1344	9	323
+1345	9	330
+1346	9	327
+1347	9	329
+1348	9	334
+1349	9	331
+1350	9	415
+1351	9	416
+1352	9	418
+1353	9	421
+1354	9	424
+1355	9	427
+1356	9	431
+1357	9	433
+1358	9	437
+1359	9	441
+1360	9	439
+1361	9	882
+1362	9	883
+1363	9	885
+1364	9	886
+1365	9	683
+1366	9	445
+1367	9	446
+1368	9	892
+1369	9	889
+1370	9	890
+1371	9	887
+1372	9	896
+1373	9	447
+1374	9	449
+1375	9	901
+1376	9	902
+1377	9	906
+1378	9	904
+1379	9	582
+1380	9	580
+1381	9	579
+1382	9	815
+1383	9	818
+1384	8	240
+1385	8	243
+1386	8	250
+1387	8	251
+1388	8	257
+1389	8	256
+1390	8	260
+1391	8	259
+1392	8	262
+1393	8	263
+1394	8	270
+1395	8	271
+1396	8	275
+1397	8	282
+1398	8	285
+1399	8	288
+1400	8	287
+1401	8	293
+1402	8	296
+1403	8	299
+1404	8	304
+1405	8	307
+1406	8	314
+1407	8	312
+1408	8	317
+1409	8	316
+1410	8	318
+1411	8	341
+1412	8	344
+1413	8	348
+1414	8	350
+1415	8	351
+1416	8	353
+1417	8	352
+1418	8	355
+1419	8	320
+1420	8	324
+1421	8	326
+1422	8	323
+1423	8	329
+1424	8	332
+1425	8	331
+1426	8	337
+\.
+
+
+--
+-- TOC entry 3058 (class 0 OID 16541)
+-- Dependencies: 205
+-- Data for Name: tower; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+COPY public.tower (tower_id, tower_name, lock, world_id) FROM stdin;
+1	Introduction	f	1
+2	Requirements Elicitation	f	1
+4	Software Design	f	2
+5	Software Quality Attributes	f	2
+6	Software Architecture	f	2
+3	Requirements Analysis and Modelling	f	1
+7	Architectural Process and Software Components	f	3
+8	UML Diagrams and Behavioral Modelling	f	3
+9	Architecture System Reusables	f	3
+\.
+
+
+--
+-- TOC entry 3056 (class 0 OID 16509)
+-- Dependencies: 203
+-- Data for Name: world; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+COPY public.world (world_id, world_name) FROM stdin;
+1	Requirement Elicitation and Analysis
+2	Software Design and Architecture
+3	Architecture System and UML Modelling
+\.
+
+
+--
+-- TOC entry 3086 (class 0 OID 0)
+-- Dependencies: 212
+-- Name: answers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('public.answers_id_seq', 1126, true);
+
+
+--
+-- TOC entry 3087 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: instructors_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('public.instructors_id_seq', 64, true);
+
+
+--
+-- TOC entry 3088 (class 0 OID 0)
+-- Dependencies: 206
+-- Name: levels_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('public.levels_id_seq', 75, true);
+
+
+--
+-- TOC entry 3089 (class 0 OID 0)
+-- Dependencies: 208
+-- Name: players_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('public.players_id_seq', 116, true);
+
+
+--
+-- TOC entry 3090 (class 0 OID 0)
+-- Dependencies: 210
+-- Name: questions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('public.questions_id_seq', 259, true);
+
+
+--
+-- TOC entry 3091 (class 0 OID 0)
+-- Dependencies: 214
+-- Name: responses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('public.responses_id_seq', 1426, true);
+
+
+--
+-- TOC entry 3092 (class 0 OID 0)
+-- Dependencies: 204
+-- Name: towers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('public.towers_id_seq', 15, true);
+
+
+--
+-- TOC entry 3093 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: worlds_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('public.worlds_id_seq', 2, true);
+
+
+--
+-- TOC entry 2902 (class 2606 OID 16624)
+-- Name: answer answer_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.answer
+    ADD CONSTRAINT answer_pkey PRIMARY KEY (answer_id);
+
+
+--
+-- TOC entry 2908 (class 2606 OID 16742)
+-- Name: dungeon dungeon_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.dungeon
+    ADD CONSTRAINT dungeon_pkey PRIMARY KEY (player_name);
+
+
+--
+-- TOC entry 2906 (class 2606 OID 16677)
+-- Name: instructor instructor_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.instructor
+    ADD CONSTRAINT instructor_pkey PRIMARY KEY (instructor_id);
+
+
+--
+-- TOC entry 2894 (class 2606 OID 16567)
+-- Name: level level_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.level
+    ADD CONSTRAINT level_pkey PRIMARY KEY (level_id);
+
+
+--
+-- TOC entry 2896 (class 2606 OID 16593)
+-- Name: player player_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.player
+    ADD CONSTRAINT player_pkey PRIMARY KEY (player_id);
+
+
+--
+-- TOC entry 2900 (class 2606 OID 16611)
+-- Name: question question_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.question
+    ADD CONSTRAINT question_pkey PRIMARY KEY (question_id);
+
+
+--
+-- TOC entry 2904 (class 2606 OID 16640)
+-- Name: response response_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.response
+    ADD CONSTRAINT response_pkey PRIMARY KEY (response_id);
+
+
+--
+-- TOC entry 2892 (class 2606 OID 16546)
+-- Name: tower tower_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.tower
+    ADD CONSTRAINT tower_pkey PRIMARY KEY (tower_id);
+
+
+--
+-- TOC entry 2898 (class 2606 OID 16664)
+-- Name: player unique_name; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.player
+    ADD CONSTRAINT unique_name UNIQUE (player_name);
+
+
+--
+-- TOC entry 2890 (class 2606 OID 16514)
+-- Name: world world_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.world
+    ADD CONSTRAINT world_pkey PRIMARY KEY (world_id);
+
+
+--
+-- TOC entry 2914 (class 2606 OID 16646)
+-- Name: response fk_answer; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.response
+    ADD CONSTRAINT fk_answer FOREIGN KEY (answer_id) REFERENCES public.answer(answer_id);
+
+
+--
+-- TOC entry 2911 (class 2606 OID 16612)
+-- Name: question fk_level; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.question
+    ADD CONSTRAINT fk_level FOREIGN KEY (level_id) REFERENCES public.level(level_id);
+
+
+--
+-- TOC entry 2928 (class 2606 OID 16806)
+-- Name: progress fk_level; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.progress
+    ADD CONSTRAINT fk_level FOREIGN KEY (level_id) REFERENCES public.level(level_id);
+
+
+--
+-- TOC entry 2913 (class 2606 OID 16641)
+-- Name: response fk_player; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.response
+    ADD CONSTRAINT fk_player FOREIGN KEY (player_id) REFERENCES public.player(player_id);
+
+
+--
+-- TOC entry 2920 (class 2606 OID 16743)
+-- Name: dungeon fk_player; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.dungeon
+    ADD CONSTRAINT fk_player FOREIGN KEY (player_name) REFERENCES public.player(player_name);
+
+
+--
+-- TOC entry 2926 (class 2606 OID 16796)
+-- Name: progress fk_player; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.progress
+    ADD CONSTRAINT fk_player FOREIGN KEY (player_id) REFERENCES public.player(player_id);
+
+
+--
+-- TOC entry 2912 (class 2606 OID 16625)
+-- Name: answer fk_question; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.answer
+    ADD CONSTRAINT fk_question FOREIGN KEY (question_id) REFERENCES public.question(question_id);
+
+
+--
+-- TOC entry 2915 (class 2606 OID 16678)
+-- Name: instructor fk_question_id_1; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.instructor
+    ADD CONSTRAINT fk_question_id_1 FOREIGN KEY (question_1) REFERENCES public.question(question_id);
+
+
+--
+-- TOC entry 2921 (class 2606 OID 16748)
+-- Name: dungeon fk_question_id_1; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.dungeon
+    ADD CONSTRAINT fk_question_id_1 FOREIGN KEY (question_1) REFERENCES public.question(question_id);
+
+
+--
+-- TOC entry 2916 (class 2606 OID 16683)
+-- Name: instructor fk_question_id_2; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.instructor
+    ADD CONSTRAINT fk_question_id_2 FOREIGN KEY (question_2) REFERENCES public.question(question_id);
+
+
+--
+-- TOC entry 2922 (class 2606 OID 16753)
+-- Name: dungeon fk_question_id_2; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.dungeon
+    ADD CONSTRAINT fk_question_id_2 FOREIGN KEY (question_2) REFERENCES public.question(question_id);
+
+
+--
+-- TOC entry 2917 (class 2606 OID 16688)
+-- Name: instructor fk_question_id_3; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.instructor
+    ADD CONSTRAINT fk_question_id_3 FOREIGN KEY (question_3) REFERENCES public.question(question_id);
+
+
+--
+-- TOC entry 2923 (class 2606 OID 16758)
+-- Name: dungeon fk_question_id_3; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.dungeon
+    ADD CONSTRAINT fk_question_id_3 FOREIGN KEY (question_3) REFERENCES public.question(question_id);
+
+
+--
+-- TOC entry 2918 (class 2606 OID 16693)
+-- Name: instructor fk_question_id_4; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.instructor
+    ADD CONSTRAINT fk_question_id_4 FOREIGN KEY (question_4) REFERENCES public.question(question_id);
+
+
+--
+-- TOC entry 2924 (class 2606 OID 16763)
+-- Name: dungeon fk_question_id_4; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.dungeon
+    ADD CONSTRAINT fk_question_id_4 FOREIGN KEY (question_4) REFERENCES public.question(question_id);
+
+
+--
+-- TOC entry 2919 (class 2606 OID 16698)
+-- Name: instructor fk_question_id_5; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.instructor
+    ADD CONSTRAINT fk_question_id_5 FOREIGN KEY (question_5) REFERENCES public.question(question_id);
+
+
+--
+-- TOC entry 2925 (class 2606 OID 16768)
+-- Name: dungeon fk_question_id_5; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.dungeon
+    ADD CONSTRAINT fk_question_id_5 FOREIGN KEY (question_5) REFERENCES public.question(question_id);
+
+
+--
+-- TOC entry 2910 (class 2606 OID 16568)
+-- Name: level fk_tower; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.level
+    ADD CONSTRAINT fk_tower FOREIGN KEY (tower_id) REFERENCES public.tower(tower_id);
+
+
+--
+-- TOC entry 2927 (class 2606 OID 16801)
+-- Name: progress fk_tower; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.progress
+    ADD CONSTRAINT fk_tower FOREIGN KEY (tower_id) REFERENCES public.tower(tower_id);
+
+
+--
+-- TOC entry 2909 (class 2606 OID 16547)
+-- Name: tower fk_world; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.tower
+    ADD CONSTRAINT fk_world FOREIGN KEY (world_id) REFERENCES public.world(world_id);
+
+
+-- Completed on 2021-03-29 02:29:35
+
+--
+-- PostgreSQL database dump complete
+--
+
