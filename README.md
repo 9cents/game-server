@@ -5,6 +5,8 @@
 1. PostgreSQL database
 2. Check `/src/database/db.config.js` that it is accurate to connect to your PostgreSQL database
 
+Refer to [DatabaseSetup.md](DatabaseSetup.md) for more details
+
 ---
 ## Installation
 
